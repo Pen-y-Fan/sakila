@@ -8,12 +8,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
+/**
+ * Understanding the usage of WHERE keyword
+ * Based on
+ * https://www.youtube.com/watch?v=wP73mHNwnLE&list=PLkyrdyGDWthC-yd9n8R3CEauJC4sFl-kj&index=3
+ */
 class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
 {
     /**
-     * Understanding the usage of WHERE keyword
-     * Based on
-     * https://www.youtube.com/watch?v=wP73mHNwnLE&list=PLkyrdyGDWthC-yd9n8R3CEauJC4sFl-kj&index=3
      * When the operator is omitted the default is an equals.
      */
     public function testOperatorDefaultsToEquals(): void
@@ -22,7 +24,7 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
         // SELECT * FROM actor WHERE last_name = 'BERRY';
 
         $actorsCalledBerry = DB::table('actor')
-            ->where('last_name', 'Berry') // Note: no '=' operator
+            ->where('last_name', 'BERRY') // Note: no '=' operator
             ->get();
 
         self::assertCount(3, $actorsCalledBerry);
