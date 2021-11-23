@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\Country;
+use App\Models\Film;
 use Database\Seeders\CountrySeeder;
+use Database\Seeders\FilmSeeder;
+use Database\Seeders\LanguageSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
@@ -42,7 +44,9 @@ class ExploringFurtherTheWhereKeywordsTest extends TestCase
 
     public function testTenFilmsWithReplacementCostBetween1999And2099(): void
     {
-        self::markTestSkipped('to be converted to model');
+        $this->seed(LanguageSeeder::class);
+        $this->seed(FilmSeeder::class);
+//        self::markTestSkipped('to be converted to model');
 
         /*
             SELECT film_id, title, special_features, replacement_cost
@@ -52,10 +56,10 @@ class ExploringFurtherTheWhereKeywordsTest extends TestCase
             LIMIT 10;
         */
 
-        $films = DB::table('film')
-            ->select('film_id', 'title', 'special_features', 'replacement_cost')
+        $films = Film::query()
+            ->select('id', 'title', 'special_features', 'replacement_cost')
             ->whereBetween('replacement_cost', [19.99, 20.99])
-            ->orderBy('film_id')
+            ->orderBy('id')
             ->limit(10)
             ->get();
 
@@ -88,7 +92,8 @@ class ExploringFurtherTheWhereKeywordsTest extends TestCase
 
     public function testTenFilmsWithReplacementCostNotBetween1899And2099(): void
     {
-        self::markTestSkipped('to be converted to model');
+        $this->seed(LanguageSeeder::class);
+        $this->seed(FilmSeeder::class);
 
         /*
             SELECT film_id, title, special_features, replacement_cost
@@ -98,10 +103,10 @@ class ExploringFurtherTheWhereKeywordsTest extends TestCase
             LIMIT 10;
         */
 
-        $films = DB::table('film')
-            ->select('film_id', 'title', 'special_features', 'replacement_cost')
+        $films = Film::query()
+            ->select('id', 'title', 'special_features', 'replacement_cost')
             ->whereNotBetween('replacement_cost', [18.99, 20.99])
-            ->orderBy('film_id')
+            ->orderBy('id')
             ->limit(10)
             ->get();
 
@@ -137,7 +142,8 @@ class ExploringFurtherTheWhereKeywordsTest extends TestCase
 
     public function testAfricanEggOrAgentTruman(): void
     {
-        self::markTestSkipped('to be converted to model');
+        $this->seed(LanguageSeeder::class);
+        $this->seed(FilmSeeder::class);
 
         /*
             SELECT film_id, title, special_features, replacement_cost
@@ -145,8 +151,8 @@ class ExploringFurtherTheWhereKeywordsTest extends TestCase
             WHERE (title = 'African Egg') OR (title = 'Agent Truman');
         */
 
-        $films = DB::table('film')
-            ->select('film_id', 'title', 'special_features', 'replacement_cost')
+        $films = Film::query()
+            ->select('id', 'title', 'special_features', 'replacement_cost')
             ->where('title', 'African Egg')
             ->orWhere('title', 'Agent Truman')
             ->get();
