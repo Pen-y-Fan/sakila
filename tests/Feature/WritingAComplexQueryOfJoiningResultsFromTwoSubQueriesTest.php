@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use Illuminate\Support\Facades\DB;
@@ -18,6 +20,7 @@ class WritingAComplexQueryOfJoiningResultsFromTwoSubQueriesTest extends TestCase
      */
     public function testDisplayEachStoreIdCityCountryAndSales(): void
     {
+        self::markTestSkipped('to be converted to model');
         /*
 
         SELECT store_details.store_id, store_details.city, payment_details.sales
@@ -56,7 +59,6 @@ class WritingAComplexQueryOfJoiningResultsFromTwoSubQueriesTest extends TestCase
             ->join('payment AS pay', 'cus.customer_id', '=', 'pay.customer_id')
             ->groupBy('cus.store_id');
 
-
         $resuts = DB::query()
             ->select(['store_details.*', 'payment_details.sales'])
             ->fromSub($storeDetails, 'store_details')
@@ -72,7 +74,6 @@ class WritingAComplexQueryOfJoiningResultsFromTwoSubQueriesTest extends TestCase
         {"store_id":2,"city":"Woodridge","country":"Australia"}
         */
 
-
         self::assertCount(2, $paymentDetails->get());
         Log::info('Payment details', [$paymentDetails->get()]);
 
@@ -86,7 +87,6 @@ class WritingAComplexQueryOfJoiningResultsFromTwoSubQueriesTest extends TestCase
         self::assertCount(2, $resuts);
         Log::info('Store with payments results', [$resuts]);
 
-
         /*
                 [2021-11-06 12:40:28] testing.INFO: Store with payments results
         [{"Illuminate\\Support\\Collection":[
@@ -94,6 +94,5 @@ class WritingAComplexQueryOfJoiningResultsFromTwoSubQueriesTest extends TestCase
         {"store_id":2,"city":"Woodridge","country":"Australia","sales":"30414.99"}
         ]}]
         */
-
     }
 }

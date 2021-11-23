@@ -20,6 +20,7 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
      */
     public function testOperatorDefaultsToEquals(): void
     {
+        self::markTestSkipped('to be converted to model');
 
         // SELECT * FROM actor WHERE last_name = 'BERRY';
 
@@ -48,6 +49,7 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
 
     public function testWhereClausesCanBeChained(): void
     {
+        self::markTestSkipped('to be converted to model');
 
         // SELECT * FROM actor WHERE last_name = 'BERRY' AND first_name = 'KARL';
 
@@ -76,6 +78,7 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
 
     public function testWhereClauseCanBeAnArray(): void
     {
+        self::markTestSkipped('to be converted to model');
 
         // SELECT * FROM actor WHERE last_name = 'BERRY' AND first_name = 'KARL';
 
@@ -83,7 +86,7 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
             ->where(
                 [
                     ['last_name', 'BERRY'],
-                    ['first_name', 'KARL']
+                    ['first_name', 'KARL'],
                 ]
             )
             ->get();
@@ -111,6 +114,7 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
      */
     public function testWhereClauseCanBeAClosure(): void
     {
+        self::markTestSkipped('to be converted to model');
 
         // SELECT * FROM actor WHERE last_name = 'BERRY' AND first_name = 'KARL';
 
@@ -119,7 +123,7 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
                 $query->where(
                     [
                         ['first_name', 'KARL'],
-                        ['last_name', 'BERRY']
+                        ['last_name', 'BERRY'],
                     ]
                 );
             })
@@ -149,6 +153,7 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
      */
     public function testWhereWithOrderByAndGroupBy(): void
     {
+        self::markTestSkipped('to be converted to model');
         /*
                 SELECT
                     last_name,
@@ -162,7 +167,7 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
             ->select(
                 [
                     'last_name',
-                    DB::raw('COUNT(*) AS actor_count')
+                    DB::raw('COUNT(*) AS actor_count'),
                 ]
             )
             ->groupBy('last_name')
@@ -175,7 +180,6 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
         // Most popular is {"last_name":"KILMER","actor_count":5},
         self::assertSame('KILMER', $TopTenListOfActorsLastNames[0]->last_name);
         self::assertSame(5, $TopTenListOfActorsLastNames[0]->actor_count);
-
 
         Log::info(
             'Top 10 list of the most popular last names, with a count of how many actors have used it',

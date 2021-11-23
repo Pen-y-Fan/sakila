@@ -20,6 +20,7 @@ class UnderstandingJoinsInSqlAndTranslatingThemInQueryBuilderTest extends TestCa
      */
     public function testJoiningStaffToAddressToCityToCountry(): void
     {
+        self::markTestSkipped('to be converted to model');
         /*
             SELECT s.staff_id,
                    s.first_name,
@@ -47,7 +48,7 @@ class UnderstandingJoinsInSqlAndTranslatingThemInQueryBuilderTest extends TestCa
                     'a.district',
                     'a.postal_code',
                     'ci.city',
-                    'co.country'
+                    'co.country',
                 ]
             )
             ->leftJoin('address AS a', 's.address_id', '=', 'a.address_id')

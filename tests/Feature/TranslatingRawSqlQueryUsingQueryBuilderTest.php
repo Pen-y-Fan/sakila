@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use Illuminate\Support\Facades\DB;
@@ -11,11 +13,10 @@ class TranslatingRawSqlQueryUsingQueryBuilderTest extends TestCase
     /**
      * Based on
      * @link https://www.youtube.com/watch?v=OIZmTyMq6cU&list=PLkyrdyGDWthC-yd9n8R3CEauJC4sFl-kj&index=2
-     *
-     * @return void
      */
     public function testRawSqlToQueryBuilder(): void
     {
+        self::markTestSkipped('to be converted to model');
         // SELECT * FROM actor WHERE last_name = 'BERRY';
 
         $actorsCalledBerry = DB::table('actor')
@@ -39,6 +40,5 @@ class TranslatingRawSqlQueryUsingQueryBuilderTest extends TestCase
         {"actor_id":91,"first_name":"CHRISTOPHER","last_name":"BERRY","last_update":"2006-02-15 04:34:33"}
         ]}]
         */
-
     }
 }

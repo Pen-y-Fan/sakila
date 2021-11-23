@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Feature;
@@ -19,6 +20,7 @@ class UsingJoinsAndConditionalsInQueryBuilderTest extends TestCase
      */
     public function testCountOfFilmCategories(): void
     {
+        self::markTestSkipped('to be converted to model');
         /*
 
         -- Display categories and number of film in each category where film' language is English
@@ -86,12 +88,11 @@ class UsingJoinsAndConditionalsInQueryBuilderTest extends TestCase
         {"name":"Horror","film_count":56},
         {"name":"Music","film_count":51}]}]
         */
-
-
     }
 
     public function testCountOfFilmCategoriesUsingClosure(): void
     {
+        self::markTestSkipped('to be converted to model');
         /*
 
         -- Display categories and number of film in each category where film' language is English
@@ -118,7 +119,7 @@ class UsingJoinsAndConditionalsInQueryBuilderTest extends TestCase
             ->join('film AS f', 'fc.film_id', '=', 'f.film_id')
             ->join(
                 'language AS l',
-                fn($join) => $join->on('f.language_id', '=', 'l.language_id')->where('l.name', 'English')
+                fn ($join) => $join->on('f.language_id', '=', 'l.language_id')->where('l.name', 'English')
             )
             ->groupBy('c.name')
             ->orderBy('film_count', 'DESC');
@@ -179,7 +180,5 @@ class UsingJoinsAndConditionalsInQueryBuilderTest extends TestCase
         */
 
         self::assertSame(1000, $sum);
-
-
     }
 }

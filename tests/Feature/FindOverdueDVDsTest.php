@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use Illuminate\Support\Facades\DB;
@@ -17,6 +19,7 @@ class FindOverdueDVDsTest extends TestCase
      */
     public function testDisplayOverdueDVDs(): void
     {
+        self::markTestSkipped('to be converted to model');
         /*
 
         Many DVD stores produce a daily list of overdue rentals so that customers can be contacted and asked to
@@ -57,12 +60,11 @@ class FindOverdueDVDsTest extends TestCase
             ->leftJoin('inventory', 'rental.inventory_id', '=', 'inventory.inventory_id')
             ->leftJoin('film', 'inventory.film_id', '=', 'film.film_id')
             ->whereNull('rental.return_date')
-            ->where(DB::raw('rental_date + INTERVAL film.rental_duration DAY'),  '<', 'CURRENT_DATE()')
+            ->where(DB::raw('rental_date + INTERVAL film.rental_duration DAY'), '<', 'CURRENT_DATE()')
             ->orderBy('title')
             ->limit(5);
 
         Log::info('Overdue films SQL', [$overdueFilms->toSQL()]);
-
 
         /*
 
@@ -91,7 +93,6 @@ class FindOverdueDVDsTest extends TestCase
            `TITLE` ASC LIMIT 5"
         */
 
-
         $overdueFilms = $overdueFilms->get();
 
         Log::info('Overdue films', [$overdueFilms]);
@@ -106,8 +107,5 @@ class FindOverdueDVDsTest extends TestCase
         {"customer":"COLE, TRACY","phone":"371490777743","title":"ALI FOREVER"}]}
 
         */
-
-
     }
-
 }

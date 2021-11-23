@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Models\Country;
+use Database\Seeders\CountrySeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
@@ -15,42 +18,32 @@ use Tests\TestCase;
  */
 class ExploringFurtherTheWhereKeywordsTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testWhereInExample(): void
     {
-        /*
-            SELECT country_id, country FROM country
-            WHERE country IN ('Afghanistan', 'Bangladesh', 'China')
-            ORDER BY country_id DESC
-         */
+        $this->seed(CountrySeeder::class);
 
         $selection = ['Afghanistan', 'Bangladesh', 'China'];
-        $countries = DB::table('country')
-            ->select(['country_id', 'country'])
+
+        $countries = Country::query()
             ->whereIn('country', $selection)
-            ->orderBy('country_id', 'DESC')
+            ->orderBy('id', 'DESC')
             ->get();
+
+        Log::info('Countries Where In Example', [$countries]);
 
         self::assertCount(3, $countries);
 
         foreach ($countries as $country) {
             self::assertContains($country->country, $selection);
         }
-
-        Log::info('Countries Where In Example', [$countries]);
-
-        /*
-                [2021-11-04 21:23:50] testing.INFO: Countries Where In Example
-                [{"Illuminate\\Database\\Query\\Builder":
-                [
-                {"country_id":23,"country":"China"},
-                {"country_id":12,"country":"Bangladesh"},
-                {"country_id":1,"country":"Afghanistan"}
-                ]}]
-        */
     }
 
     public function testTenFilmsWithReplacementCostBetween1999And2099(): void
     {
+        self::markTestSkipped('to be converted to model');
+
         /*
             SELECT film_id, title, special_features, replacement_cost
             FROM film
@@ -91,11 +84,12 @@ class ExploringFurtherTheWhereKeywordsTest extends TestCase
         {"film_id":113,"title":"CALIFORNIA BIRDS","special_features":"Trailers,Commentaries,Deleted Scenes","replacement_cost":"19.99"}
         ]}]
         */
-
     }
 
     public function testTenFilmsWithReplacementCostNotBetween1899And2099(): void
     {
+        self::markTestSkipped('to be converted to model');
+
         /*
             SELECT film_id, title, special_features, replacement_cost
             FROM film
@@ -139,10 +133,12 @@ class ExploringFurtherTheWhereKeywordsTest extends TestCase
         ]}]
 
         */
-
     }
+
     public function testAfricanEggOrAgentTruman(): void
     {
+        self::markTestSkipped('to be converted to model');
+
         /*
             SELECT film_id, title, special_features, replacement_cost
             FROM film

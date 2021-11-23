@@ -53,8 +53,7 @@ php artisan key:generate
 
 ## Install Database
 
-View [Sakila Sample Database / Installation](https://dev.mysql.com/doc/sakila/en/sakila-installation.html) for detailed
-instructions on how to download and install the Sakila database.
+This experiment uses models and seeders to generate the tables for the database. Tests will use 
 
 ## Configure Laravel
 

@@ -19,6 +19,7 @@ class ExploringSubQueriesUsingBuilderQueryTest extends TestCase
      */
     public function testDisplayTheTitlesOfMoviesWithTheLettersKAndQ(): void
     {
+        self::markTestIncomplete('to be converted to Model');
         /*
 
         SELECT film_id, title
@@ -61,9 +62,7 @@ class ExploringSubQueriesUsingBuilderQueryTest extends TestCase
         {"film_id":708,"title":"QUILLS BULL"}]}]
 
         */
-
     }
-
 
     /**
      * Display the titles of movies with the letters K and Q whose language is English
@@ -71,6 +70,7 @@ class ExploringSubQueriesUsingBuilderQueryTest extends TestCase
      */
     public function testDisplayTheTitlesOfMoviesWithTheLettersKAndQWhoseLanguageIsEnglish(): void
     {
+        self::markTestIncomplete('to be converted to Model');
         /*
 
             SELECT film_id, title
@@ -123,6 +123,5 @@ class ExploringSubQueriesUsingBuilderQueryTest extends TestCase
         ]}]
 
         */
-
     }
 }
