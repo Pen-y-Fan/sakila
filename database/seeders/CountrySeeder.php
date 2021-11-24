@@ -12,7 +12,7 @@ class CountrySeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run()
+    public function run(): void
     {
         $country = [
             [
