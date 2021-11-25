@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use Illuminate\Support\Facades\DB;
+use App\Models\Film;
 use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
@@ -19,7 +19,6 @@ class ExploringSubQueriesUsingBuilderQueryTest extends TestCase
      */
     public function testDisplayTheTitlesOfMoviesWithTheLettersKAndQ(): void
     {
-        self::markTestIncomplete('to be converted to Model');
         /*
 
         SELECT film_id, title
@@ -30,8 +29,8 @@ class ExploringSubQueriesUsingBuilderQueryTest extends TestCase
         */
 
         /** @noinspection SpellCheckingInspection */
-        $moviesBeginningWithKAndQ = DB::table('film')
-            ->select(['film_id', 'title'])
+        $moviesBeginningWithKAndQ = Film::query()
+            ->select(['id', 'title'])
             ->where('title', 'LIKE', 'K%')
             ->orWhere('title', 'LIKE', 'Q%')
             ->orderBy('title')
@@ -70,7 +69,6 @@ class ExploringSubQueriesUsingBuilderQueryTest extends TestCase
      */
     public function testDisplayTheTitlesOfMoviesWithTheLettersKAndQWhoseLanguageIsEnglish(): void
     {
-        self::markTestIncomplete('to be converted to Model');
         /*
 
             SELECT film_id, title
@@ -86,41 +84,35 @@ class ExploringSubQueriesUsingBuilderQueryTest extends TestCase
         */
 
         /** @noinspection SpellCheckingInspection */
-        $englishKandQMovies = DB::table('film')
-            ->select(['film_id', 'title'])
-            ->where('title', 'LIKE', 'K%')
+        $englishKandQMovies = Film::where('title', 'LIKE', 'K%')
             ->orWhere('title', 'LIKE', 'Q%')
-            ->whereIn(
-                'language_id',
-                fn ($query) => $query->select('language_id')->from('language')->where('name', 'english')
-            )
-            ->orderBy('title')
-            ->get();
-
-        self::assertCount(15, $englishKandQMovies);
+            ->whereHas('language', function (\Illuminate\Database\Eloquent\Builder $query) {
+                $query->where('name', 'english');
+            })
+            ->pluck('title', 'id');
 
         Log::info('English K and Q movies', [$englishKandQMovies]);
+        self::assertCount(15, $englishKandQMovies);
 
         /*
-
-        [2021-11-06 11:18:30] testing.INFO: English K and Q movies
-        [{"Illuminate\\Support\\Collection":[
-        {"film_id":493,"title":"KANE EXORCIST"},
-        {"film_id":494,"title":"KARATE MOON"},
-        {"film_id":495,"title":"KENTUCKIAN GIANT"},
-        {"film_id":496,"title":"KICK SAVANNAH"},
-        {"film_id":497,"title":"KILL BROTHERHOOD"},
-        {"film_id":498,"title":"KILLER INNOCENT"},
-        {"film_id":499,"title":"KING EVOLUTION"},
-        {"film_id":500,"title":"KISS GLORY"},
-        {"film_id":501,"title":"KISSING DOLLS"},
-        {"film_id":502,"title":"KNOCK WARLOCK"},
-        {"film_id":503,"title":"KRAMER CHOCOLATE"},
-        {"film_id":504,"title":"KWAI HOMEWARD"},
-        {"film_id":706,"title":"QUEEN LUKE"},
-        {"film_id":707,"title":"QUEST MUSSOLINI"},
-        {"film_id":708,"title":"QUILLS BULL"}
-        ]}]
+        [2021-11-24 23:44:38] testing.INFO: English K and Q movies
+        [{"Illuminate\\Support\\Collection":{
+        "493":"KANE EXORCIST",
+        "494":"KARATE MOON",
+        "495":"KENTUCKIAN GIANT",
+        "496":"KICK SAVANNAH",
+        "497":"KILL BROTHERHOOD",
+        "498":"KILLER INNOCENT",
+        "499":"KING EVOLUTION",
+        "500":"KISS GLORY",
+        "501":"KISSING DOLLS",
+        "502":"KNOCK WARLOCK",
+        "503":"KRAMER CHOCOLATE",
+        "504":"KWAI HOMEWARD",
+        "706":"QUEEN LUKE",
+        "707":"QUEST MUSSOLINI",
+        "708":"QUILLS BULL"
+        }}]
 
         */
     }
