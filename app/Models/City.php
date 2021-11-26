@@ -7,7 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Country extends Model
+class City extends Model
 {
     use HasFactory;
 
@@ -15,11 +15,12 @@ class Country extends Model
         'id'
     ];
 
+
     /**
-     * Get the Cities for the Country.
+     * Get the Country associated with the City.
      */
-    public function cities()
+    public function country()
     {
-        return $this->hasMany(City::class);
+        return $this->belongsTo(Country::class);
     }
 }

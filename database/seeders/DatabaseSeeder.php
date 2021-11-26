@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             LanguageSeeder::class,
             FilmSeeder::class,
+            ActorSeeder::class,
+            CitySeeder::class,
         ]);
     }
 }
