@@ -11,6 +11,10 @@ class Language extends Model
 {
     use HasFactory;
 
+    protected $guarded = [
+        'id'
+    ];
+
     /**
      * Get the Films for the language.
      */
