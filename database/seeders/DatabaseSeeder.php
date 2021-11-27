@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             FilmSeeder::class,
             ActorSeeder::class,
             CitySeeder::class,
+            AddressSeeder::class,
         ]);
     }
 }

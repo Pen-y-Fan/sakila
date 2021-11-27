@@ -15,12 +15,19 @@ class City extends Model
         'id'
     ];
 
-
     /**
      * Get the Country associated with the City.
      */
     public function country()
     {
         return $this->belongsTo(Country::class);
+    }
+
+    /**
+     * Get the Addresses in this City.
+     */
+    public function Addresses()
+    {
+        return $this->hasMany(Address::class);
     }
 }
