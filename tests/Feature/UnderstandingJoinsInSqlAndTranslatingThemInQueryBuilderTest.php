@@ -56,9 +56,9 @@ class UnderstandingJoinsInSqlAndTranslatingThemInQueryBuilderTest extends TestCa
             ->leftJoin('country AS co', 'ci.country_id', '=', 'co.country_id')
             ->get();
 
-        self::assertCount(2, $staff);
-
         Log::info('Joining staff to address to city to country', [$staff]);
+
+        self::assertCount(2, $staff);
 
         /*
         [2021-11-04 23:03:51] testing.INFO: Joining staff to address to city to country

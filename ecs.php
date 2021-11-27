@@ -18,8 +18,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Laravel app setup
     $parameters->set(Option::PATHS, [
         __DIR__ . '/app',
-        //        __DIR__ . '/src',
-        __DIR__ . '/bootstrap',
         __DIR__ . '/config',
         __DIR__ . '/database',
         __DIR__ . '/public',

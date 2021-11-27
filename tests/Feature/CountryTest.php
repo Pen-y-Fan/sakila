@@ -18,7 +18,7 @@ class CountryTest extends TestCase
 
     public function testAfghanistanHasCityOfKabul(): void
     {
-        $countries = Country::where('country', "=", "Afghanistan")->with('cities')->first();
+        $countries = Country::where('country', '=', 'Afghanistan')->with('cities')->first();
 
         $cities = $countries->cities->first();
         $this->assertSame('Kabul', $cities->city);
@@ -37,12 +37,11 @@ class CountryTest extends TestCase
 
         $cities = $lastCountry->cities->first();
         $this->assertSame('Kitwe', $cities->city);
-
     }
 
     public function testJapanIsCountryFifty(): void
     {
-        $fiftiethCountry = Country::where('country', "Japan")->first();
+        $fiftiethCountry = Country::where('country', 'Japan')->first();
 
         $this->assertSame(50, $fiftiethCountry->id);
     }

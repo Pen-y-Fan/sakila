@@ -66,8 +66,4 @@ class CityTest extends TestCase
         $this->assertSame('47 MySakila Drive', $lethbridge->addresses->first()->address);
         $this->assertSame('23 Workhaven Lane', $lethbridge->addresses->last()->address);
     }
-
-
-
-
 }

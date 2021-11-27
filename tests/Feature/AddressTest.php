@@ -55,12 +55,9 @@ class AddressTest extends TestCase
         }}}]
         */
 
-
         $this->assertSame('661 Chisinau Lane', $chisinauLane->address);
         $this->assertSame('Pietari', $chisinauLane->district);
         $this->assertSame('Kolpino', $chisinauLane->city->city);
         $this->assertSame('Russian Federation', $chisinauLane->city->country->country);
     }
-
-
 }

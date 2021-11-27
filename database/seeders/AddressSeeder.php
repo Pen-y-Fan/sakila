@@ -30,25 +30,25 @@ class AddressSeeder extends Seeder
                     'postal_code' => $address[5],
                     'phone'       => $address[6],
                     'location'    => $address[7],
-                    "created_at"  => $address[8],
-                    "updated_at"  => $address[9],
+                    'created_at'  => $address[8],
+                    'updated_at'  => $address[9],
                 ];
             },
             [
                 [
-                    1, '47 MySakila Drive', NULL, 'Alberta', 300, '', '', '0x0000000001010000003E0A325D63345CC0761FDB8D99D94840',
+                    1, '47 MySakila Drive', null, 'Alberta', 300, '', '', '0x0000000001010000003E0A325D63345CC0761FDB8D99D94840',
                     '2014-09-25 22:30:27', '2014-09-25 22:30:27',
                 ],
                 [
-                    2, '28 MySQL Boulevard', NULL, 'QLD', 576, '', '', '0x0000000001010000008E10D4DF812463404EE08C5022A23BC0',
+                    2, '28 MySQL Boulevard', null, 'QLD', 576, '', '', '0x0000000001010000008E10D4DF812463404EE08C5022A23BC0',
                     '2014-09-25 22:30:09', '2014-09-25 22:30:09',
                 ],
                 [
-                    3, '23 Workhaven Lane', NULL, 'Alberta', 300, '', '14033335568', '0x000000000101000000CDC4196863345CC01DEE7E7099D94840',
+                    3, '23 Workhaven Lane', null, 'Alberta', 300, '', '14033335568', '0x000000000101000000CDC4196863345CC01DEE7E7099D94840',
                     '2014-09-25 22:30:27', '2014-09-25 22:30:27',
                 ],
                 [
-                    4, '1411 Lillydale Drive', NULL, 'QLD', 576, '', '6172235589', '0x0000000001010000005B0DE4341F26634042D6AE6422A23BC0',
+                    4, '1411 Lillydale Drive', null, 'QLD', 576, '', '6172235589', '0x0000000001010000005B0DE4341F26634042D6AE6422A23BC0',
                     '2014-09-25 22:30:09', '2014-09-25 22:30:09',
                 ],
                 [
@@ -2449,8 +2449,5 @@ class AddressSeeder extends Seeder
                 ],
             ]
         );
-
     }
-
-
 }
