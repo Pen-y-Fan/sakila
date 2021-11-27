@@ -15,10 +15,10 @@ class {{ class }} extends Seeder
     public function run(): void
     {
         // TODO: add the seeder to the DatabaseSeeder
-        // TODO: created the ${{ table }} and uncomment the insert
-        ${{ table }} = [
+        // TODO: created the $data and uncomment the insert
+        $data = [
             //
         ];
-        // DB::table('{{ table }}')->insert(${{ table }});
+        // DB::table('{{ table }}')->insert($data);
     }
 }

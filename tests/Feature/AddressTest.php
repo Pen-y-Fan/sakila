@@ -67,4 +67,43 @@ class AddressTest extends TestCase
 
         $this->assertSame(1, $firstAddress->store->id);
     }
+
+    public function testTheThirdAddressIsStaffOne(): void
+    {
+        $staffAddress = Address::with('staff')->find(3);
+
+        $this->assertSame(1, $staffAddress->staff->first()->id);
+        $this->assertSame('Mike', $staffAddress->staff->first()->first_name);
+    }
+
+    public function testTheForthAddressIsStaffTwo(): void
+    {
+        $staffAddress = Address::with('staff')->find(4);
+
+        $this->assertSame(2, $staffAddress->staff->first()->id);
+        $this->assertSame('Jon', $staffAddress->staff->first()->first_name);
+    }
+
+    public function testTheThirdAddressIsStaffOneWhoWorksAtAddressOne(): void
+    {
+        $staffAddress = Address::with('staff')
+            ->with('staff.store')
+            ->with('staff.store.address')
+            ->find(3);
+
+        Log::info('testTheThirdAddressIsStaffOneWhoWorksAtAddressOne', [$staffAddress]);
+
+        /*
+        [2021-11-27 19:01:55] testing.INFO: testTheThirdAddressIsStaffOneWhoWorksAtAddressOne [
+        {"App\\Models\\Address":{"id":3,"address":"23 Workhaven Lane","address2":null,"district":"Alberta","city_id":300,"postal_code":"","phone":"14033335568","location":"0x000000000101000000CDC4196863345CC01DEE7E7099D94840","created_at":"2014-09-25T22:30:27.000000Z","updated_at":"2014-09-25T22:30:27.000000Z",
+        "staff":[
+            {"id":1,"first_name":"Mike","last_name":"Hillyer","address_id":3,"picture":null,"email":"Mike.Hillyer@sakilastaff.com","store_id":1,"active":1,"username":"Mike","password":"8cb2237d0679ca88db6464eac60da96345513964","created_at":"2006-02-15T03:57:16.000000Z","updated_at":"2006-02-15T03:57:16.000000Z",
+            "store":{"id":1,"manager_staff_id":1,"address_id":1,"created_at":"2006-02-15T04:57:12.000000Z","updated_at":"2006-02-15T04:57:12.000000Z",
+            "address":{"id":1,"address":"47 MySakila Drive","address2":null,"district":"Alberta","city_id":300,"postal_code":"","phone":"","location":"0x0000000001010000003E0A325D63345CC0761FDB8D99D94840","created_at":"2014-09-25T22:30:27.000000Z","updated_at":"2014-09-25T22:30:27.000000Z"}
+        }}
+        ]}}]
+        */
+
+        $this->assertSame('47 MySakila Drive', $staffAddress->staff->first()->store->address->address);
+    }
 }

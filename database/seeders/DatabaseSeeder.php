@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             ActorSeeder::class,
             CitySeeder::class,
             AddressSeeder::class,
+            StoreSeeder::class,
+            StaffSeeder::class,
         ]);
     }
 }

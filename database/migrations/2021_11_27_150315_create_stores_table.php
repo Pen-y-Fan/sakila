@@ -16,8 +16,6 @@ class CreateStoresTable extends Migration
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
 
-            // TODO: Add foreignId once the staff table has been created (another migration)
-            $table->unsignedBigInteger('manager_staff_id')->unique();
             $table->foreignId('address_id')->constrained()->cascadeOnUpdate()->restrictOnDelete();
             /*
                         `manager_staff_id` TINYINT(3) UNSIGNED NOT NULL,

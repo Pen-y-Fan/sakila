@@ -59,5 +59,39 @@ class StoreTest extends TestCase
         $this->assertSame('Australia', $storeAddress->address->city->country->country);
     }
 
-    // TODO: Add staff tests once the table has been created
+    public function testTheFirstStoreHasManagerStaffOne(): void
+    {
+        $storeManager = Store::with('staff')
+            ->first();
+
+        Log::info('testTheFirstStoreHasManagerStaffOne', [$storeManager]);
+
+        /*
+            [2021-11-27 19:14:55] testing.INFO: testTheFirstStoreHasManagerStaffOne
+        [{"App\\Models\\Store":{"id":1,"manager_staff_id":1,"address_id":1,"created_at":"2006-02-15T04:57:12.000000Z","updated_at":"2006-02-15T04:57:12.000000Z",
+        "staff":{"id":1,"first_name":"Mike","last_name":"Hillyer","address_id":3,"picture":null,"email":"Mike.Hillyer@sakilastaff.com","store_id":1,"active":1,"username":"Mike","password":"8cb2237d0679ca88db6464eac60da96345513964","created_at":"2006-02-15T03:57:16.000000Z","updated_at":"2006-02-15T03:57:16.000000Z"}
+        }}]
+        */
+
+        $this->assertSame(1, $storeManager->staff->id);
+        $this->assertSame('Mike', $storeManager->staff->first_name);
+    }
+
+    public function testTheSecondStoreHasManagerStaffTwo(): void
+    {
+        $storeManager = Store::with('staff')
+            ->find(2);
+
+        Log::info('testTheSecondStoreHasManagerStaffTwo', [$storeManager]);
+
+        /*
+            [2021-11-27 19:16:41] testing.INFO: testTheSecondStoreHasManagerStaffTwo
+        [{"App\\Models\\Store":{"id":2,"manager_staff_id":2,"address_id":2,"created_at":"2006-02-15T04:57:12.000000Z","updated_at":"2006-02-15T04:57:12.000000Z",
+        "staff":{"id":2,"first_name":"Jon","last_name":"Stephens","address_id":4,"picture":null,"email":"Jon.Stephens@sakilastaff.com","store_id":2,"active":1,"username":"Jon","password":null,"created_at":"2006-02-15T03:57:16.000000Z","updated_at":"2006-02-15T03:57:16.000000Z"}
+        }}]
+        */
+
+        $this->assertSame(2, $storeManager->staff->id);
+        $this->assertSame('Jon', $storeManager->staff->first_name);
+    }
 }
