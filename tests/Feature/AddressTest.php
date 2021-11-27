@@ -60,4 +60,11 @@ class AddressTest extends TestCase
         $this->assertSame('Kolpino', $chisinauLane->city->city);
         $this->assertSame('Russian Federation', $chisinauLane->city->country->country);
     }
+
+    public function testTheFirstAddressIsStoreOne(): void
+    {
+        $firstAddress = Address::with('store')->first();
+
+        $this->assertSame(1, $firstAddress->store->id);
+    }
 }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Film extends Model
+class Store extends Model
 {
     use HasFactory;
 
@@ -21,10 +21,10 @@ class Film extends Model
     ];
 
     /**
-     * Get the language associated with the Film.
+     * Get the Address associated with this Store.
      */
-    public function language(): BelongsTo
+    public function address(): BelongsTo
     {
-        return $this->belongsTo(Language::class);
+        return $this->belongsTo(Address::class);
     }
 }
