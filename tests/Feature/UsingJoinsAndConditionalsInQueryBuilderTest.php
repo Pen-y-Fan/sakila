@@ -41,7 +41,6 @@ class UsingJoinsAndConditionalsInQueryBuilderTest extends TestCase
 
         */
 
-
         /*
         $filmCategoryCount = DB::query()
             ->select(['c.name', DB::raw('COUNT(f.film_id) AS film_count')])
@@ -59,7 +58,7 @@ class UsingJoinsAndConditionalsInQueryBuilderTest extends TestCase
                 'films' => function (Builder $query) {
                     $query->join(
                         'languages',
-                        fn($join) => $join->on('films.language_id', '=', 'languages.id')
+                        fn ($join) => $join->on('films.language_id', '=', 'languages.id')
                             ->where('languages.name', 'English')
                     );
                 },

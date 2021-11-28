@@ -16,7 +16,6 @@ use Tests\TestCase;
  */
 class UnderstandingJoinsInSqlAndTranslatingThemInQueryBuilderTest extends TestCase
 {
-
     public function testLaravelWayToJoinModels(): void
     {
         $staff = Staff::select(['id', 'first_name', 'last_name', 'email', 'address_id'])
@@ -109,7 +108,6 @@ class UnderstandingJoinsInSqlAndTranslatingThemInQueryBuilderTest extends TestCa
         $this->assertSame('Alberta', $firstStaff->district);
         $this->assertSame('Lethbridge', $firstStaff->city);
         $this->assertSame('Canada', $firstStaff->country);
-
 
         /*
             [2021-11-27 19:53:03] testing.INFO: Joining staff to address to city to country [

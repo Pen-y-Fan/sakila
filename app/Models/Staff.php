@@ -29,7 +29,6 @@ class Staff extends Model
         'password',
     ];
 
-
     /**
      * Get the Store for this Staff.
      */

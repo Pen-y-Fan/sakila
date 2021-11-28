@@ -150,11 +150,11 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
                 LIMIT 10;
         */
         $TopTenListOfActorsLastNames = Actor::select(
-                [
-                    'last_name',
-                    DB::raw('COUNT(*) AS actor_count'),
-                ]
-            )
+            [
+                'last_name',
+                DB::raw('COUNT(*) AS actor_count'),
+            ]
+        )
             ->groupBy('last_name')
             ->orderBy('actor_count', 'DESC')
             ->limit(10)

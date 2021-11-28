@@ -14,7 +14,6 @@ class CreateCategoryFilmTable extends Migration
     public function up(): void
     {
         Schema::create('category_film', function (Blueprint $table) {
-
             $table->foreignId('category_id')->constrained()->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('film_id')->constrained()->cascadeOnUpdate()->restrictOnDelete();
             $table->primary(['category_id', 'film_id']);

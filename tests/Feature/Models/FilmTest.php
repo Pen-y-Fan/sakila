@@ -52,8 +52,8 @@ class FilmTest extends TestCase
 
         $lastFilm = Film::find(1000);
 
-        $this->assertSame("ZORRO ARK", $lastFilm->title);
-        $this->assertSame("A Intrepid Panorama of a Mad Scientist And a Boy who must Redeem a Boy in A Monastery", $lastFilm->description);
+        $this->assertSame('ZORRO ARK', $lastFilm->title);
+        $this->assertSame('A Intrepid Panorama of a Mad Scientist And a Boy who must Redeem a Boy in A Monastery', $lastFilm->description);
         $this->assertSame(2006, $lastFilm->release_year);
         $this->assertSame(1, $lastFilm->language_id);
         $this->assertSame(3, $lastFilm->rental_duration);
@@ -68,7 +68,6 @@ class FilmTest extends TestCase
         $this->assertSame(1, $academyDinosaur->language_id);
         $this->assertSame('English', $academyDinosaur->language->name);
     }
-
 
     public function testTheAcademyDinosaursCategoriesAre(): void
     {
