@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             AddressSeeder::class,
             StoreSeeder::class,
             StaffSeeder::class,
+            CategoryFilmSeeder::class,
         ]);
     }
 }
