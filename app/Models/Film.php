@@ -36,4 +36,12 @@ class Film extends Model
     {
         return $this->belongsToMany(Category::class);
     }
+
+    /**
+     * Get the Actors associated with the Film.
+     */
+    public function actors(): BelongsToMany
+    {
+        return $this->belongsToMany(Actor::class);
+    }
 }

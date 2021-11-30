@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Models;
 
 use App\Models\Film;
+use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class FilmTest extends TestCase
@@ -69,12 +70,34 @@ class FilmTest extends TestCase
         $this->assertSame('English', $academyDinosaur->language->name);
     }
 
-    public function testTheAcademyDinosaursCategoriesAre(): void
+    public function testTheAcademyDinosaursCategoriesAreDocumentary(): void
     {
         $academyDinosaur = Film::with('categories')->first();
 
-        $this->assertSame(1, $academyDinosaur->language_id);
+        $this->assertSame(1, $academyDinosaur->id);
         $this->assertSame(1, $academyDinosaur->categories->count());
         $this->assertSame('Documentary', $academyDinosaur->categories->first()->name);
+    }
+
+    public function testTheAcademyDinosaursActors(): void
+    {
+        $academyDinosaur = Film::with('actors')->first();
+
+        Log::info('testTheAcademyDinosaursActors', [$academyDinosaur]);
+        /*
+            [2021-11-28 19:52:38] testing.INFO: testTheAcademyDinosaursActors [
+        {"App\\Models\\Film":
+        {"id":1,"title":"ACADEMY DINOSAUR","description":"A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies","release_year":2006,"language_id":1,"original_language_id":null,"rental_duration":6,"rental_rate":"0.99","length":86,"replacement_cost":"20.99","rating":"PG","special_features":"Deleted Scenes,Behind the Scenes","created_at":"2006-02-15T05:03:42.000000Z","updated_at":"2006-02-15T05:03:42.000000Z",
+        "actors":[
+            {"id":1,"first_name":"PENELOPE","last_name":"GUINESS","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":1}},
+            {"id":10,"first_name":"CHRISTIAN","last_name":"GABLE","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":10}},
+            {"id":20,"first_name":"LUCILLE","last_name":"TRACY","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":20}},
+            {"id":30,"first_name":"SANDRA","last_name":"PECK","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":30}}
+        ]}}]
+        */
+
+        $this->assertSame(4, $academyDinosaur->actors->count());
+        $this->assertSame('PENELOPE', $academyDinosaur->actors->first()->first_name);
+        $this->assertSame('SANDRA', $academyDinosaur->actors->last()->first_name);
     }
 }
