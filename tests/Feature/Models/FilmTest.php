@@ -100,4 +100,11 @@ class FilmTest extends TestCase
         $this->assertSame('PENELOPE', $academyDinosaur->actors->first()->first_name);
         $this->assertSame('SANDRA', $academyDinosaur->actors->last()->first_name);
     }
+
+    public function testAcademyDinosaursHasAnInventoryOfEight(): void
+    {
+        $inventoryOfAcademyDinosaurs = Film::with(['inventories'])->first();
+
+        $this->assertSame(8, $inventoryOfAcademyDinosaurs->inventories->count());
+    }
 }

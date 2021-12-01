@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Film extends Model
 {
@@ -43,5 +44,13 @@ class Film extends Model
     public function actors(): BelongsToMany
     {
         return $this->belongsToMany(Actor::class);
+    }
+
+    /**
+     * Get the Inventories for the Film.
+     */
+    public function inventories(): HasMany
+    {
+        return $this->hasMany(Inventory::class);
     }
 }
