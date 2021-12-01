@@ -91,14 +91,12 @@ class WritingAComplexQueryOfJoiningResultsFromTwoSubQueriesTest extends TestCase
         $this->assertSame('Woodridge', $storeTwo->address->city->city);
         $this->assertSame('Australia', $storeTwo->address->city->country->country);
 
-
         // $storeDetails = DB::query()
         //     ->select(['sto.store_id', 'city.city', 'cont.country'])
         //     ->from('store AS sto')
         //     ->leftJoin('address AS addr', 'sto.address_id', '=', 'addr.address_id')
         //     ->leftJoin('city', 'addr.city_id', '=', 'city.city_id')
         //     ->join('country AS cont', 'city.country_id', '=', 'cont.country_id');
-
 
         self::markTestSkipped('to be converted to model');
 
@@ -115,7 +113,6 @@ class WritingAComplexQueryOfJoiningResultsFromTwoSubQueriesTest extends TestCase
             ->fromSub($storeDetailsQuery, 'store_details')
             ->joinSub($paymentDetails, 'payment_details', 'store_details.store_id', '=', 'payment_details.store_id')
             ->get();
-
 
         self::assertCount(2, $paymentDetails->get());
         Log::info('Payment details', [$paymentDetails->get()]);

@@ -106,4 +106,25 @@ class AddressTest extends TestCase
 
         $this->assertSame('47 MySakila Drive', $staffAddress->staff->first()->store->address->address);
     }
+
+    public function testTheFifthAddressIsCustomerMarySmith(): void
+    {
+        $customerAddress = Address::with(
+            [
+                'customer:first_name,last_name,address_id',
+            ]
+        )->find(5);
+
+        Log::info('testTheFifthAddressIsCustomerMarySmith', [$customerAddress]);
+
+        /*
+            [2021-11-30 22:51:42] testing.INFO: testTheFifthAddressIsCustomerMarySmith [
+        {"App\\Models\\Address":{"id":5,"address":"1913 Hanoi Way","address2":"","district":"Nagasaki","city_id":463,"postal_code":"35200","phone":"28303384290","location":"0x00000000010100000028D1370E21376040ABB58BC45F944040","created_at":"2014-09-25T22:31:53.000000Z","updated_at":"2014-09-25T22:31:53.000000Z",
+        "customer":{"first_name":"MARY","last_name":"SMITH","address_id":5}
+        }}]
+        */
+
+        $this->assertSame('MARY', $customerAddress->customer->first_name);
+        $this->assertSame('SMITH', $customerAddress->customer->last_name);
+    }
 }

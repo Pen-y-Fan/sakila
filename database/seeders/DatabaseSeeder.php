@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
                 StaffSeeder::class,
                 CategoryFilmSeeder::class,
                 ActorFilmSeeder::class,
+                CustomerSeeder::class,
             ]
         );
     }

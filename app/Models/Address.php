@@ -27,6 +27,14 @@ class Address extends Model
     }
 
     /**
+     * Get the Customer for this address.
+     */
+    public function customer(): HasOne
+    {
+        return $this->hasOne(Customer::class);
+    }
+
+    /**
      * Get the Store for this address.
      */
     public function store(): HasOne
