@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use Illuminate\Support\Facades\DB;
+use App\Models\Rental;
 use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
@@ -19,93 +19,44 @@ class FindOverdueDVDsTest extends TestCase
      */
     public function testDisplayOverdueDVDs(): void
     {
-        self::markTestSkipped('to be converted to model');
-        /*
-
-        Many DVD stores produce a daily list of overdue rentals so that customers can be contacted and asked to
-         return their overdue DVDs.
-
-        To create such a list, search the rental table for films with a return date that is NULL and where the rental
-         date is further in the past than the rental duration specified in the film table. If so, the film is overdue
-         and we should produce the name of the film along with the customer name and phone number.
-
-
-
-        SELECT
-            CONCAT(customer.last_name, ', ', customer.first_name) AS customer,
-            address.phone,
-            film.title
-        FROM rental INNER JOIN customer ON rental.customer_id = customer.customer_id
-                    INNER JOIN address ON customer.address_id = address.address_id
-                    INNER JOIN inventory ON rental.inventory_id = inventory.inventory_id
-                    INNER JOIN film ON inventory.film_id = film.film_id
-        WHERE rental.return_date IS NULL
-          AND rental_date + INTERVAL film.rental_duration DAY < CURRENT_DATE()
-        ORDER BY title
-        LIMIT 5;
-
-        */
-
-        $overdueFilms = DB::query()
-            ->select(
+        $overdueFilms = Rental::whereNull('return_date')
+            ->with(
                 [
-                    DB::raw("CONCAT(customer.last_name, ', ', customer.first_name) AS customer"),
-                    'address.phone',
-                    'film.title',
+                    'customer:id,first_name,last_name,address_id',
+                    'customer.address:id,phone',
+                    'inventory:id,film_id,store_id',
+                    'inventory.film:id,title,rental_duration'
                 ]
             )
-            ->from('rental')
-            ->leftJoin('customer', 'rental.customer_id', '=', 'customer.customer_id')
-            ->leftJoin('address', 'customer.address_id', '=', 'address.address_id')
-            ->leftJoin('inventory', 'rental.inventory_id', '=', 'inventory.inventory_id')
-            ->leftJoin('film', 'inventory.film_id', '=', 'film.film_id')
-            ->whereNull('rental.return_date')
-            ->where(DB::raw('rental_date + INTERVAL film.rental_duration DAY'), '<', 'CURRENT_DATE()')
-            ->orderBy('title')
-            ->limit(5);
+            ->get();
 
-        Log::info('Overdue films SQL', [$overdueFilms->toSQL()]);
+        // would need to filter on the overdue date too!
+        $overdueFilms->transform(function($rental) {
+            return collect([
+                "customer" => $rental->customer->last_name . ', ' . $rental->customer->first_name,
+                "phone" => $rental->customer->address->phone,
+                "title" => $rental->inventory->film->title
+            ]);
+        });
+
+        Log::info('Over due films', [$overdueFilms]);
 
         /*
+            [2021-12-02 23:13:09] testing.INFO: Over due films
+        [{"Illuminate\\Support\\Collection":[
+        {"customer":"KNIGHT, GAIL","phone":"904253967161","title":"HYDE DOCTOR"},
+        {"customer":"MAULDIN, GREGORY","phone":"80303246192","title":"HUNGER ROOF"},
+        {"customer":"JENKINS, LOUISE","phone":"800716535041","title":"FRISCO FORREST"},
+        {"customer":"HOWELL, WILLIE","phone":"991802825778","title":"TITANS JERK"},
+        {"customer":"DIAZ, EMILY","phone":"333339908719","title":"CONNECTION MICROCOSMOS"},
+        {"customer":"LAWRENCE, LAURIE","phone":"956188728558","title":"HAUNTED ANTITRUST"},
+        {"customer":"ANDERSON, LISA","phone":"635297277345","title":"BULL SHAWSHANK"},
+        {"customer":"DUGGAN, FREDDIE","phone":"644021380889","title":"GHOST GROUNDHOG"},
 
-        SELECT
-           CONCAT(CUSTOMER.LAST_NAME, ', ', CUSTOMER.FIRST_NAME) AS CUSTOMER,
-           `ADDRESS`.`PHONE`,
-           `FILM`.`TITLE`
-        FROM
-           `RENTAL`
-           LEFT JOIN
-              `CUSTOMER`
-              ON `RENTAL`.`CUSTOMER_ID` = `CUSTOMER`.`CUSTOMER_ID`
-           LEFT JOIN
-              `ADDRESS`
-              ON `CUSTOMER`.`ADDRESS_ID` = `ADDRESS`.`ADDRESS_ID`
-           LEFT JOIN
-              `INVENTORY`
-              ON `RENTAL`.`INVENTORY_ID` = `INVENTORY`.`INVENTORY_ID`
-           LEFT JOIN
-              `FILM`
-              ON `INVENTORY`.`FILM_ID` = `FILM`.`FILM_ID`
-        WHERE
-           `RENTAL`.`RETURN_DATE` IS NULL
-           AND RENTAL_DATE + INTERVAL FILM.RENTAL_DURATION DAY < ?
-        ORDER BY
-           `TITLE` ASC LIMIT 5"
-        */
+        ....
+        ]}]
+         */
 
-        $overdueFilms = $overdueFilms->get();
-
-        Log::info('Overdue films', [$overdueFilms]);
-        self::assertCount(5, $overdueFilms);
-        /*
-
-        {"Illuminate\\Support\\Collection":[{
-        "customer":"OLVERA, DWAYNE","phone":"62127829280","title":"ACADEMY DINOSAUR"},
-        {"customer":"HUEY, BRANDON","phone":"99883471275","title":"ACE GOLDFINGER"},
-        {"customer":"OWENS, CARMEN","phone":"272234298332","title":"AFFAIR PREJUDICE"},
-        {"customer":"HANNON, SETH","phone":"864392582257","title":"AFRICAN EGG"},
-        {"customer":"COLE, TRACY","phone":"371490777743","title":"ALI FOREVER"}]}
-
-        */
+        self::assertCount(183, $overdueFilms);
     }
 }
