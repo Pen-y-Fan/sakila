@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Inventory extends Model
 {
@@ -28,7 +29,6 @@ class Inventory extends Model
         return $this->belongsTo(Film::class);
     }
 
-
     /**
      * Get the Store for the Inventory item (DVD).
      */
@@ -37,5 +37,11 @@ class Inventory extends Model
         return $this->belongsTo(Store::class);
     }
 
-    // Rental
+    /**
+     * Get the Rentals for the Inventory.
+     */
+    public function rentals(): HasMany
+    {
+        return $this->hasMany(Rental::class);
+    }
 }

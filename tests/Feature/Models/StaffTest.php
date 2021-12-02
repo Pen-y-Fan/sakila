@@ -57,4 +57,12 @@ class StaffTest extends TestCase
         $this->assertSame(2, $jonStephens->store->id);
         $this->assertSame('28 MySQL Boulevard', $jonStephens->store->address->address);
     }
+
+    public function testJonStephensFirstRentalWasInventory2452Film535LoveSuicides(): void
+    {
+        $jonStephens = Staff::with('rentals')->find(2);
+
+        $this->assertSame(2452, $jonStephens->rentals->first()->inventory_id);
+        $this->assertSame('LOVE SUICIDES', $jonStephens->rentals->first()->inventory->film->title);
+    }
 }

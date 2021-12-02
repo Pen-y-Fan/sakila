@@ -17,7 +17,7 @@ class InventoryTest extends TestCase
         "updated_at" => "2006-02-15 05:09:17",
     ];
 
-    const LAST = [
+    const ONE_K = [
         "id"         => 1000,
         "film_id"    => 223,
         "store_id"   => 2,
@@ -25,11 +25,19 @@ class InventoryTest extends TestCase
         "updated_at" => "2006-02-15 05:09:17",
     ];
 
-    public function testThereAreOneThousandItemsOfInventory(): void
+    const LAST = [
+        "id"         => 4581,
+        "film_id"    => 1000,
+        "store_id"   => 2,
+        "created_at" => "2006-02-15 05:09:17",
+        "updated_at" => "2006-02-15 05:09:17",
+    ];
+
+    public function testThereAre4581ItemsOfInventory(): void
     {
         $inventoryCount = Inventory::count();
 
-        $this->assertSame(1000, $inventoryCount);
+        $this->assertSame(4581, $inventoryCount);
     }
 
     public function testTheFirstInventoryItemIsFilmAcademyDinosaur(): void
@@ -47,12 +55,25 @@ class InventoryTest extends TestCase
         $this->assertSame('47 MySakila Drive', $firstInventory->store->address->address);
     }
 
-    public function testTheLastInventoryItemIsFilmDesireAlien(): void
+    public function testThe1000thInventoryItemIsFilmDesireAlien(): void
     {
-        $firstInventory = Inventory::with('film')->find(self::LAST['id']);
+        $lastInventory = Inventory::with('film')->find(self::ONE_K['id']);
 
-        $this->assertSame('DESIRE ALIEN', $firstInventory->film->title);
+        $this->assertSame('DESIRE ALIEN', $lastInventory->film->title);
     }
 
-    // The first inventory was rented on....
+    public function testTheLastInventoryItemIsFilmZorroArk(): void
+    {
+        $lastInventory = Inventory::with('film')->find(self::LAST['id']);
+
+        $this->assertSame('ZORRO ARK', $lastInventory->film->title);
+    }
+
+    public function testTheFirstInventoryWasRentedToCustomerJoelFrancisco(): void
+    {
+        $firstInventory = Inventory::with('rentals')->first();
+
+        $this->assertSame(431, $firstInventory->rentals->first()->customer_id);
+        $this->assertSame('JOEL.FRANCISCO@sakilacustomer.org', $firstInventory->rentals->first()->customer->email);
+    }
 }

@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Staff extends Model
 {
@@ -43,5 +44,13 @@ class Staff extends Model
     public function address(): BelongsTo
     {
         return $this->belongsTo(Address::class);
+    }
+
+    /**
+     * Get the Rentals for the Staff.
+     */
+    public function rentals(): HasMany
+    {
+        return $this->hasMany(Rental::class);
     }
 }
