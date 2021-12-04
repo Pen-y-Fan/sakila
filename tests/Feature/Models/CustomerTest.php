@@ -90,4 +90,12 @@ class CustomerTest extends TestCase
         $this->assertSame(76, $customerOne->rentals->first()->id);
         $this->assertSame('PATIENT SISTER', $customerOne->rentals->first()->inventory->film->title);
     }
+
+    public function testCustomerOneFirstPaymentIs2_99(): void
+    {
+        $customerOne = Customer::with('payments')->first();
+
+        $this->assertSame(1, $customerOne->payments->first()->id);
+        $this->assertSame('2.99', $customerOne->payments->first()->amount);
+    }
 }

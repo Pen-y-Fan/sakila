@@ -44,4 +44,12 @@ class Customer extends Model
     {
         return $this->hasMany(Rental::class);
     }
+
+    /**
+     * Get the Payments for the Customer.
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

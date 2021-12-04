@@ -80,4 +80,12 @@ class RentalTest extends TestCase
         $this->assertSame(367, $rental->inventory->id);
         $this->assertSame('BLANKET BEVERLY', $rental->inventory->film->title);
     }
+
+    public function testTheFirstRentalPaymentIs2_99(): void
+    {
+        $rental = Rental::with('payments')->first();
+
+        $this->assertSame(3504, $rental->payments->first()->id);
+        $this->assertSame('2.99', $rental->payments->first()->amount);
+    }
 }

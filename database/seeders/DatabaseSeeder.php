@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
                 CustomerSeeder::class,
                 InventorySeeder::class,
                 RentalSeeder::class,
+                PaymentSeeder::class,
             ]
         );
     }

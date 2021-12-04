@@ -53,4 +53,12 @@ class Staff extends Model
     {
         return $this->hasMany(Rental::class);
     }
+
+    /**
+     * Get the Payments taken by the Staff.
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

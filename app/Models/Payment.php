@@ -7,9 +7,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Rental extends Model
+class Payment extends Model
 {
     use HasFactory;
 
@@ -22,7 +21,7 @@ class Rental extends Model
     ];
 
     /**
-     * Get the Customer associated with this Rental.
+     * Get the Customer associated with this Payment.
      */
     public function customer(): BelongsTo
     {
@@ -30,7 +29,7 @@ class Rental extends Model
     }
 
     /**
-     * Get the Staff associated with this Rental.
+     * Get the Staff associated with this Payment.
      */
     public function staff(): BelongsTo
     {
@@ -38,18 +37,10 @@ class Rental extends Model
     }
 
     /**
-     * Get the Inventory associated with this Rental.
+     * Get the Rental associated with this Payment.
      */
-    public function inventory(): BelongsTo
+    public function rental(): BelongsTo
     {
-        return $this->belongsTo(Inventory::class);
-    }
-
-    /**
-     * Get the Payments for the Rental.
-     */
-    public function payments(): HasMany
-    {
-        return $this->hasMany(Payment::class);
+        return $this->belongsTo(Rental::class);
     }
 }

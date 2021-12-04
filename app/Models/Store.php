@@ -45,4 +45,12 @@ class Store extends Model
     {
         return $this->hasMany(Customer::class);
     }
+
+    /**
+     * Get the Store's payments.
+     */
+    public function customerPayments()
+    {
+        return $this->hasOneThrough(Payment::class, Customer::class);
+    }
 }

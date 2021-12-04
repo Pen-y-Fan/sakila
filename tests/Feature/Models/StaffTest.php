@@ -65,4 +65,12 @@ class StaffTest extends TestCase
         $this->assertSame(2452, $jonStephens->rentals->first()->inventory_id);
         $this->assertSame('LOVE SUICIDES', $jonStephens->rentals->first()->inventory->film->title);
     }
+
+    public function testMikeHillyerFirstPaymentTakenWas2_99(): void
+    {
+        $jonStephens = Staff::with('payments')->first();
+
+        $this->assertSame(1, $jonStephens->payments->first()->id);
+        $this->assertSame('2.99', $jonStephens->payments->first()->amount);
+    }
 }
