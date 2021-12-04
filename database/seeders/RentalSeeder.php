@@ -18,14 +18,14 @@ class RentalSeeder extends Seeder
             $rental = [];
             foreach ($rentals as $record) {
                 $rental[] = [
-                    "id"           => $record[0],
-                    "rental_date"  => $record[1],
-                    "inventory_id" => $record[2],
-                    "customer_id"  => $record[3],
-                    "return_date"  => $record[4],
-                    "staff_id"     => $record[5],
-                    "created_at"   => $record[6],
-                    "updated_at"   => $record[6],
+                    'id'           => $record[0],
+                    'rental_date'  => $record[1],
+                    'inventory_id' => $record[2],
+                    'customer_id'  => $record[3],
+                    'return_date'  => $record[4],
+                    'staff_id'     => $record[5],
+                    'created_at'   => $record[6],
+                    'updated_at'   => $record[6],
                 ];
             }
 

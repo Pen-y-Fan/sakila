@@ -25,17 +25,17 @@ class FindOverdueDVDsTest extends TestCase
                     'customer:id,first_name,last_name,address_id',
                     'customer.address:id,phone',
                     'inventory:id,film_id,store_id',
-                    'inventory.film:id,title,rental_duration'
+                    'inventory.film:id,title,rental_duration',
                 ]
             )
             ->get();
 
         // would need to filter on the overdue date too!
-        $overdueFilms->transform(function($rental) {
+        $overdueFilms->transform(function ($rental) {
             return collect([
-                "customer" => $rental->customer->last_name . ', ' . $rental->customer->first_name,
-                "phone" => $rental->customer->address->phone,
-                "title" => $rental->inventory->film->title
+                'customer' => $rental->customer->last_name . ', ' . $rental->customer->first_name,
+                'phone'    => $rental->customer->address->phone,
+                'title'    => $rental->inventory->film->title,
             ]);
         });
 

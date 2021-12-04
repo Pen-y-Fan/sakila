@@ -9,9 +9,11 @@ use Tests\TestCase;
 
 class PaymentTest extends TestCase
 {
-    const FIRST = [1, 1, 1, 76, 2.99, '2005-05-25 11:30:37', '2006-02-15 22:12:30'];
-    const EIGHT_K = [8000, 295, 1, 8108, 7.99, '2005-07-28 19:07:38', '2006-02-15 22:15:36'];
-    const LAST = [16049, 599, 2, 15725, 2.99, '2005-08-23 11:25:00', '2006-02-15 22:24:13'];
+    public const FIRST = [1, 1, 1, 76, 2.99, '2005-05-25 11:30:37', '2006-02-15 22:12:30'];
+
+    public const EIGHT_K = [8000, 295, 1, 8108, 7.99, '2005-07-28 19:07:38', '2006-02-15 22:15:36'];
+
+    public const LAST = [16049, 599, 2, 15725, 2.99, '2005-08-23 11:25:00', '2006-02-15 22:24:13'];
 
     public function testThereAre16049Payments(): void
     {
@@ -23,18 +25,17 @@ class PaymentTest extends TestCase
     public function testTheFirstPaymentIsMigrated(): void
     {
         $firstPayment = $this->getPayment(self::FIRST);
-        $payment = Payment::first();
+        $payment      = Payment::first();
 
         $this->assertSame($firstPayment['id'], $payment->id);
         $this->assertSame($firstPayment['payment_date'], $payment->payment_date);
         $this->assertSame($firstPayment['customer_id'], $payment->customer_id);
     }
 
-
     public function testTheLastPaymentIsMigrated(): void
     {
         $lastPayment = $this->getPayment(self::LAST);
-        $payment = Payment::find($lastPayment['id']);
+        $payment     = Payment::find($lastPayment['id']);
 
         $this->assertSame($lastPayment['id'], $payment->id);
         $this->assertSame($lastPayment['payment_date'], $payment->payment_date);
@@ -76,7 +77,7 @@ class PaymentTest extends TestCase
         $this->assertSame('2005-06-03 12:00:37', $payment->rental->return_date);
     }
 
-    public function testTheSumOFAllPaymentsIs67416_51(): void
+    public function testTheSumOFAllPaymentsIs6741651(): void
     {
         $sum = Payment::sum('amount');
 
@@ -86,15 +87,14 @@ class PaymentTest extends TestCase
     private function getPayment($record): array
     {
         return [
-            "id"           => $record[0],
-            "customer_id"  => $record[1],
-            "staff_id"     => $record[2],
-            "rental_id"    => $record[3],
-            "amount"       => $record[4],
-            "payment_date" => $record[5],
-            "created_at"   => $record[6],
-            "updated_at"   => $record[6],
+            'id'           => $record[0],
+            'customer_id'  => $record[1],
+            'staff_id'     => $record[2],
+            'rental_id'    => $record[3],
+            'amount'       => $record[4],
+            'payment_date' => $record[5],
+            'created_at'   => $record[6],
+            'updated_at'   => $record[6],
         ];
     }
-
 }

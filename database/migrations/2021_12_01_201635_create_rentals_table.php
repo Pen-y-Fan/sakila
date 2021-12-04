@@ -22,7 +22,7 @@ class CreateRentalsTable extends Migration
             $table->dateTime('return_date')->nullable();
             $table->foreignId('staff_id')->index()->constrained()->cascadeOnUpdate()->restrictOnDelete();
 
-            $table->unique(['rental_date', 'inventory_id', 'customer_id'],'rental_date');
+            $table->unique(['rental_date', 'inventory_id', 'customer_id'], 'rental_date');
 
             $table->timestamps();
         });

@@ -66,7 +66,7 @@ class StaffTest extends TestCase
         $this->assertSame('LOVE SUICIDES', $jonStephens->rentals->first()->inventory->film->title);
     }
 
-    public function testMikeHillyerFirstPaymentTakenWas2_99(): void
+    public function testMikeHillyerFirstPaymentTakenWas299(): void
     {
         $jonStephens = Staff::with('payments')->first();
 

@@ -18,14 +18,14 @@ class PaymentSeeder extends Seeder
             $payment = [];
             foreach ($payments as $record) {
                 $payment[] = [
-                    "id"           => $record[0],
-                    "customer_id"  => $record[1],
-                    "staff_id"     => $record[2],
-                    "rental_id"    => $record[3],
-                    "amount"       => $record[4],
-                    "payment_date" => $record[5],
-                    "created_at"   => $record[6],
-                    "updated_at"   => $record[6],
+                    'id'           => $record[0],
+                    'customer_id'  => $record[1],
+                    'staff_id'     => $record[2],
+                    'rental_id'    => $record[3],
+                    'amount'       => $record[4],
+                    'payment_date' => $record[5],
+                    'created_at'   => $record[6],
+                    'updated_at'   => $record[6],
                 ];
             }
             DB::table('payments')->insert($payment);

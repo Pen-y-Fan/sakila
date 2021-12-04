@@ -19,7 +19,7 @@ class CreatePaymentsTable extends Migration
             $table->foreignId('customer_id')->index()->constrained()->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('staff_id')->index()->constrained()->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('rental_id')->nullable()->index()->constrained()->cascadeOnUpdate()->nullOnDelete();
-            $table->decimal('amount', 5,2);
+            $table->decimal('amount', 5, 2);
             $table->dateTime('payment_date')->nullable();
 
             $table->timestamps();

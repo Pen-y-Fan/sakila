@@ -9,28 +9,28 @@ use Tests\TestCase;
 
 class InventoryTest extends TestCase
 {
-    const FIRST = [
-        "id"         => 1,
-        "film_id"    => 1,
-        "store_id"   => 1,
-        "created_at" => "2006-02-15 05:09:17",
-        "updated_at" => "2006-02-15 05:09:17",
+    public const FIRST = [
+        'id'         => 1,
+        'film_id'    => 1,
+        'store_id'   => 1,
+        'created_at' => '2006-02-15 05:09:17',
+        'updated_at' => '2006-02-15 05:09:17',
     ];
 
-    const ONE_K = [
-        "id"         => 1000,
-        "film_id"    => 223,
-        "store_id"   => 2,
-        "created_at" => "2006-02-15 05:09:17",
-        "updated_at" => "2006-02-15 05:09:17",
+    public const ONE_K = [
+        'id'         => 1000,
+        'film_id'    => 223,
+        'store_id'   => 2,
+        'created_at' => '2006-02-15 05:09:17',
+        'updated_at' => '2006-02-15 05:09:17',
     ];
 
-    const LAST = [
-        "id"         => 4581,
-        "film_id"    => 1000,
-        "store_id"   => 2,
-        "created_at" => "2006-02-15 05:09:17",
-        "updated_at" => "2006-02-15 05:09:17",
+    public const LAST = [
+        'id'         => 4581,
+        'film_id'    => 1000,
+        'store_id'   => 2,
+        'created_at' => '2006-02-15 05:09:17',
+        'updated_at' => '2006-02-15 05:09:17',
     ];
 
     public function testThereAre4581ItemsOfInventory(): void

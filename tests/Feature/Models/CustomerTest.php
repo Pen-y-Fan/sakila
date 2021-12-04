@@ -91,7 +91,7 @@ class CustomerTest extends TestCase
         $this->assertSame('PATIENT SISTER', $customerOne->rentals->first()->inventory->film->title);
     }
 
-    public function testCustomerOneFirstPaymentIs2_99(): void
+    public function testCustomerOneFirstPaymentIs299(): void
     {
         $customerOne = Customer::with('payments')->first();
 

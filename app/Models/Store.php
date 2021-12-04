@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Store extends Model
 {
@@ -49,7 +50,7 @@ class Store extends Model
     /**
      * Get the Store's payments.
      */
-    public function customerPayments()
+    public function customerPayments(): HasOneThrough
     {
         return $this->hasOneThrough(Payment::class, Customer::class);
     }

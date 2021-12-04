@@ -13,13 +13,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
 
     // https://tomasvotruba.com/blog/introducing-up-to-16-times-faster-easy-coding-standard/
-//    $parameters->set(Option::PARALLEL, true); // requires 9.4.70+
+    $parameters->set(Option::PARALLEL, true); // requires 9.4.70+
 
     // Laravel app setup
     $parameters->set(Option::PATHS, [
         __DIR__ . '/app',
         __DIR__ . '/config',
-        __DIR__ . '/database',
+        __DIR__ . '/database/factories',
+        __DIR__ . '/database/migrations',
+        //        __DIR__ . '/database/seeders', // There are several large seeders causing memory problems
         __DIR__ . '/public',
         __DIR__ . '/resources',
         __DIR__ . '/routes',
@@ -29,9 +31,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services = $containerConfigurator->services();
     $services->set(ArraySyntaxFixer::class)
-        ->call('configure', [[
-            'syntax' => 'short',
-        ]]);
+        ->call('configure', [
+            [
+                'syntax' => 'short',
+            ],
+        ]);
 
     // add declare(strict_types=1); to all php files:
     $services->set(DeclareStrictTypesFixer::class);
@@ -49,16 +53,18 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // align key value pairs (mostly)
     $services->set(BinaryOperatorSpacesFixer::class)
-        ->call('configure', [[
-            // Likely problems are pipe operators
-            // if this is a problem change 'default' => 'single'
-            // and uncomment this lines:
-            'default'   => 'align_single_space_minimal',
-            'operators' => [
-                '|'  => 'no_space',
-                '=>' => 'align_single_space_minimal',
+        ->call('configure', [
+            [
+                // Likely problems are pipe operators
+                // if this is a problem change 'default' => 'single'
+                // and uncomment this lines:
+                'default'   => 'align_single_space_minimal',
+                'operators' => [
+                    '|'  => 'no_space',
+                    '=>' => 'align_single_space_minimal',
+                ],
             ],
-        ]]);
+        ]);
 
     $parameters->set(Option::INDENTATION, 'spaces');
 

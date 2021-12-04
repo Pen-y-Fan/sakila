@@ -48,7 +48,6 @@ class WritingAComplexQueryOfJoiningResultsFromTwoSubQueriesTest extends TestCase
         $this->assertSame('Woodridge', $storeTwo->address->city->city);
         $this->assertSame('Australia', $storeTwo->address->city->country->country);
 
-
         $sumByStore = Store::withSum('customerPayments', 'amount')->get();
         $this->assertSame('37001.52', $sumByStore->find(1)->customer_payments_sum_amount);
         $this->assertSame('30414.99', $sumByStore->find(2)->customer_payments_sum_amount);

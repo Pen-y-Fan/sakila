@@ -14,7 +14,7 @@ class Payment extends Model
 
     /**
      * Protected fields when mass assigning
-     * @var string[] $guarded
+     * @var string[]
      */
     protected $guarded = [
         'id',
