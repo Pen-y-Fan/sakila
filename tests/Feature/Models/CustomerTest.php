@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Models;
 
+use App\Models\Country;
 use App\Models\Customer;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
@@ -97,5 +99,84 @@ class CustomerTest extends TestCase
 
         $this->assertSame(1, $customerOne->payments->first()->id);
         $this->assertSame('2.99', $customerOne->payments->first()->amount);
+    }
+
+    public function testAustralianCustomerTotalSpend(): void
+    {
+        // real world example, if we wanted to search for customers in Australia.
+        $search = 'Australia';
+        $country = Country::whereCountry($search)->first();
+
+        // Note: this is the customers store address in Australia, not the customers address!
+        // this gives us all the customers who have the Australian store and their spend
+        $australianCustomers = Customer::with('payments')
+            ->whereHas(
+                'store.address.city.country',
+                fn($query) => $query->where('country', $country->country)
+            )
+            ->whereHas(
+                'payments',
+                fn($query) => $query->where('amount', '>', 0)
+            )
+            ->get();
+        // Maybe we would loop over all the customers and display their spend 🤷
+
+        // Just an example on how to total the collection using PHP, see
+        // WritingAComplexQueryOfJoiningResultsFromTwoSubQueriesTest for an example using withSum
+        $totalSpend = $australianCustomers->reduce(
+            fn($total, $customer) => $total += $customer->payments->sum('amount'),
+            0
+        );
+
+        $this->assertSame(30414.99, $totalSpend);
+    }
+
+    public function testTheLastPaymentOffEveryCustomer(): void
+    {
+        $customer = Customer::addSelect([
+            'last_payment' => Payment::select('amount')
+                ->whereColumn('customer_id', 'customers.id')
+                ->orderByDesc('payment_date')
+                ->limit(1),
+        ])->get();
+
+        $this->assertSame(5.99, (float)$customer->first()->last_payment);
+
+        /*
+            0 => array:10 [
+            "id" => 1
+            "store_id" => 1
+            "first_name" => "MARY"
+            "last_name" => "SMITH"
+            "email" => "MARY.SMITH@sakilacustomer.org"
+            "address_id" => 5
+            "active" => true
+            "created_at" => "2006-02-14T22:04:36.000000Z"
+            "updated_at" => "2006-02-15T04:57:20.000000Z"
+            "last_payment" => "5.99"
+            ]
+
+        // etc....
+        */
+    }
+
+    public function testTheLastTenPayingCustomers(): void
+    {
+        /** @var Customer $lastTenPayingCustomer */
+        $lastTenPayingCustomer = Customer::select('id', 'first_name', 'last_name')
+            ->orderByDesc(
+                \App\Models\Payment::select('payment_date')
+                    ->whereColumn('customer_id', 'customers.id')
+                    ->orderByDesc('payment_date')
+                    ->limit(1)
+            )->limit(10)->get();
+
+        $expected = [
+            "id"         => 14,
+            "first_name" => "BETTY",
+            "last_name"  => "WHITE",
+        ];
+
+        $this->assertSame($expected, $lastTenPayingCustomer->first()->toArray());
     }
 }

@@ -22,6 +22,24 @@ class Customer extends Model
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'active' => 'boolean',
+    ];
+
+    /**
+     * Get the customer's full name.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute(): string
+    {
+        return "$this->first_name $this->last_name";
+    }
+    /**
      * Get the Store for this Customer.
      */
     public function store(): BelongsTo
