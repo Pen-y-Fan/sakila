@@ -84,6 +84,40 @@ class PaymentTest extends TestCase
         $this->assertSame('67416.51', $sum);
     }
 
+    public function testTopCustomersPercentageOfSpend(): void
+    {
+        $totalQuery = Payment::selectRaw('SUM(amount) AS total');
+
+        $payments = Payment::selectRaw('payments.*, (amount / overall.total) * 100 AS percent_of_total')
+            ->crossJoinSub($totalQuery, 'overall')
+            ->where('amount', '>', 0)
+            ->orderBy('amount', 'DESC')
+            ->limit(10)
+            ->get();
+
+        $expectedTop = [
+            'id'               => 342,
+            'customer_id'      => 13,
+            'staff_id'         => 2,
+            'rental_id'        => 8831,
+            'amount'           => '11.99',
+            'payment_date'     => '2005-07-29 22:37:41',
+            'created_at'       => '2006-02-15 22:12:31',
+            'updated_at'       => '2006-02-15 22:12:31',
+            'total'            => '67416.51',
+            'percent_of_total' => '0.017785',
+        ];
+
+        $this->assertEqualsWithDelta(
+            $expectedTop['percent_of_total'],
+            $payments->first()->percent_of_total,
+            0.000001,
+            'percent_of_total should be 0.017785'
+        );
+        $this->assertSame($expectedTop['id'], $payments->first()->id);
+        $this->assertCount(10, $expectedTop);
+    }
+
     private function getPayment($record): array
     {
         return [
@@ -97,4 +131,5 @@ class PaymentTest extends TestCase
             'updated_at'   => $record[6],
         ];
     }
+
 }
