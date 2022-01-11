@@ -252,4 +252,34 @@ class CustomerTest extends TestCase
             'total spend should be 67416.51'
         );
     }
+
+    public function testCustomerPayments(): void
+    {
+        $sumByCustomer = Customer::withSum('payments', 'amount')
+            ->withCount('payments')
+            ->withAvg('payments', 'amount')
+            ->orderByDesc('payments_sum_amount')
+            ->limit(10)
+            ->get();
+
+        Log::info('sumByCustomer', [$sumByCustomer]);
+
+        $expectedFirst = [
+            'id'                  => 526,
+            'store_id'            => 2,
+            'first_name'          => 'KARL',
+            'last_name'           => 'SEAL',
+            'email'               => 'KARL.SEAL@sakilacustomer.org',
+            'address_id'          => 532,
+            'active'              => true,
+            'created_at'          => '2006-02-14T22:04:37.000000Z',
+            'updated_at'          => '2006-02-15T04:57:20.000000Z',
+            'payments_sum_amount' => '221.55',
+            'payments_count'      => 45,
+            'payments_avg_amount' => '4.923333',
+        ];
+
+        $this->assertCount(10, $sumByCustomer);
+        $this->assertSame($expectedFirst, $sumByCustomer->first()->toArray());
+    }
 }
