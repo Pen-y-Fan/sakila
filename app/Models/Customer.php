@@ -37,8 +37,9 @@ class Customer extends Model
      */
     public function getFullNameAttribute(): string
     {
-        return "$this->first_name $this->last_name";
+        return "{$this->first_name} {$this->last_name}";
     }
+
     /**
      * Get the Store for this Customer.
      */

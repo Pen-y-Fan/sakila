@@ -461,11 +461,11 @@ class StoreTest extends TestCase
         // Active customers (active = 1)
         $this->assertSame(318, $stores->find(1)->customers->countBy(fn ($customer) => $customer['active'])[1]);
 
-        $this->assertSame(318, $stores->find(1)->customers->sum(fn ($customer) => $customer['active'] === 1));
+        $this->assertSame(318, $stores->find(1)->customers->sum(fn ($customer) => $customer['active'] === true));
 
         // Store 2, count, active and inactive
         $this->assertSame(273, $stores->find(2)->customers->count());
-        $this->assertSame(266, $stores->find(2)->customers->sum(fn ($customer) => $customer['active'] === 1));
-        $this->assertSame(7, $stores->find(2)->customers->sum(fn ($customer) => $customer['active'] === 0));
+        $this->assertSame(266, $stores->find(2)->customers->sum(fn ($customer) => $customer['active'] === true));
+        $this->assertSame(7, $stores->find(2)->customers->sum(fn ($customer) => $customer['active'] === false));
     }
 }

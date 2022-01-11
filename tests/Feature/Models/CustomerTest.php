@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpArrayWriteIsNotUsedInspection */
 
 declare(strict_types=1);
 
@@ -40,6 +41,7 @@ class CustomerTest extends TestCase
         $this->assertSame($customer['email'], $firstCustomer->email);
     }
 
+    /** @noinspection SpellCheckingInspection */
     public function testTheLastCustomerStaffIsAustinCintron(): void
     {
         $customer599 = Customer::find(599);
@@ -68,6 +70,7 @@ class CustomerTest extends TestCase
         $this->assertSame('1913 Hanoi Way', $firstCustomer->address->address);
     }
 
+    /** @noinspection SpellCheckingInspection */
     public function testMarySmithStoreAddressIs47MySakilaDrive(): void
     {
         $firstCustomer = Customer::with('store')->with('store.address')->first();
@@ -123,9 +126,9 @@ class CustomerTest extends TestCase
 
         // Just an example on how to total the collection using PHP, see
         // WritingAComplexQueryOfJoiningResultsFromTwoSubQueriesTest for an example using withSum
-        $totalSpend = $australianCustomers->reduce(
-            fn($total, $customer) => $total += $customer->payments->sum('amount'),
-            0
+
+        $totalSpend = $australianCustomers->sum(
+            fn($customer) => $customer->payments->sum('amount')
         );
 
         $this->assertSame(30414.99, $totalSpend);
@@ -162,21 +165,91 @@ class CustomerTest extends TestCase
 
     public function testTheLastTenPayingCustomers(): void
     {
-        /** @var Customer $lastTenPayingCustomer */
-        $lastTenPayingCustomer = Customer::select('id', 'first_name', 'last_name')
+        /** @var \Illuminate\Database\Eloquent\Collection<Customer> $lastTenPayingCustomer
+         * @noinspection PhpFullyQualifiedNameUsageInspection
+         */
+        $lastTenPayingCustomer = Customer::select(['id', 'first_name', 'last_name'])
             ->orderByDesc(
-                \App\Models\Payment::select('payment_date')
+                Payment::select('payment_date')
                     ->whereColumn('customer_id', 'customers.id')
                     ->orderByDesc('payment_date')
                     ->limit(1)
-            )->limit(10)->get();
+            )
+            ->limit(10)
+            ->get();
 
         $expected = [
-            "id"         => 14,
-            "first_name" => "BETTY",
-            "last_name"  => "WHITE",
+            'id'         => 14,
+            'first_name' => 'BETTY',
+            'last_name'  => 'WHITE',
         ];
 
         $this->assertSame($expected, $lastTenPayingCustomer->first()->toArray());
+    }
+
+    public function testTheTopTenPayingCustomers(): void
+    {
+        /** @var \Illuminate\Database\Eloquent\Collection<Customer> $topTenPayingCustomers
+         * @noinspection PhpFullyQualifiedNameUsageInspection
+         */
+        $topTenPayingCustomers = Customer::addSelect([
+            'total_payments' => Payment::selectRaw('SUM(amount)')
+                ->whereColumn('customer_id', 'customers.id'),
+        ])
+            ->orderByDesc('total_payments')
+            ->limit(10)
+            ->get();
+
+        $expectedFirst = [
+            "id"             => 526,
+            "store_id"       => 2,
+            "first_name"     => "KARL",
+            "last_name"      => "SEAL",
+            "email"          => "KARL.SEAL@sakilacustomer.org",
+            "address_id"     => 532,
+            "active"         => true,
+            "created_at"     => "2006-02-14T22:04:37.000000Z",
+            "updated_at"     => "2006-02-15T04:57:20.000000Z",
+            "total_payments" => "221.55",
+        ];
+
+        $this->assertCount(10, $topTenPayingCustomers);
+        $this->assertSame($expectedFirst, $topTenPayingCustomers->first()->toArray());
+        $this->assertEqualsWithDelta(
+            1912.96,
+            $topTenPayingCustomers->sum('total_payments'),
+            0.01,
+            'Top 10 customers total spend should be 1912.96'
+        );
+    }
+
+    public function testTotalSpend(): void
+    {
+        /** @var \Illuminate\Database\Eloquent\Collection<Customer> $topTenPayingCustomers
+         * @noinspection PhpFullyQualifiedNameUsageInspection
+         */
+        $topTenPayingCustomers = Customer::select(['id', 'first_name', 'last_name'])
+            ->addSelect([
+                'total_payments' => Payment::selectRaw('SUM(amount)')
+                    ->whereColumn('customer_id', 'customers.id'),
+            ])
+            ->orderByDesc('total_payments')
+            ->get();
+
+        $expectedFirst = [
+            "id"             => 526,
+            "first_name"     => "KARL",
+            "last_name"      => "SEAL",
+            "total_payments" => "221.55",
+        ];
+
+        $this->assertCount(599, $topTenPayingCustomers);
+        $this->assertSame($expectedFirst, $topTenPayingCustomers->first()->toArray());
+        $this->assertEqualsWithDelta(
+            67416.51,
+            $topTenPayingCustomers->sum('total_payments'),
+            0.01,
+            'total spend should be 67416.51'
+        );
     }
 }
