@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4d9d82f9b1059248821ff9be73e10d7",
+    "content-hash": "d95a6e7a0a4e66fc4c35d5592144110d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -6925,6 +6925,65 @@
                 "source": "https://github.com/hamcrest/hamcrest-php/tree/v2.0.1"
             },
             "time": "2020-07-09T08:09:16+00:00"
+        },
+        {
+            "name": "jeroenzwart/laravel-csv-seeder",
+            "version": "v1.6.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jeroenzwart/laravel-csv-seeder.git",
+                "reference": "5b2e094edf96ab0994f16538c521bc5b06c0943a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jeroenzwart/laravel-csv-seeder/zipball/5b2e094edf96ab0994f16538c521bc5b06c0943a",
+                "reference": "5b2e094edf96ab0994f16538c521bc5b06c0943a",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": ">=5.0",
+                "illuminate/support": ">=5.0",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "JeroenZwart\\CsvSeeder\\CsvSeederServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JeroenZwart\\CsvSeeder\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeroen Zwart",
+                    "email": "mailme@jeroenzwart.nl"
+                }
+            ],
+            "description": "Seed the database with Laravel using CSV files",
+            "homepage": "https://github.com/jeroenzwart/laravel-csv-seeder",
+            "keywords": [
+                "csv",
+                "excel",
+                "laravel",
+                "seed",
+                "seeder",
+                "seeding",
+                "seeds"
+            ],
+            "support": {
+                "issues": "https://github.com/jeroenzwart/laravel-csv-seeder/issues",
+                "source": "https://github.com/jeroenzwart/laravel-csv-seeder/tree/v1.6.2"
+            },
+            "time": "2021-12-11T16:29:20+00:00"
         },
         {
             "name": "justinrainbow/json-schema",

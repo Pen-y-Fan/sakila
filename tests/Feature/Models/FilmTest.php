@@ -85,20 +85,24 @@ class FilmTest extends TestCase
 
         Log::info('testTheAcademyDinosaursActors', [$academyDinosaur]);
         /*
-            [2021-11-28 19:52:38] testing.INFO: testTheAcademyDinosaursActors [
-        {"App\\Models\\Film":
-        {"id":1,"title":"ACADEMY DINOSAUR","description":"A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies","release_year":2006,"language_id":1,"original_language_id":null,"rental_duration":6,"rental_rate":"0.99","length":86,"replacement_cost":"20.99","rating":"PG","special_features":"Deleted Scenes,Behind the Scenes","created_at":"2006-02-15T05:03:42.000000Z","updated_at":"2006-02-15T05:03:42.000000Z",
+            [2022-01-16 22:39:06] testing.INFO: testTheAcademyDinosaursActors [
+        {"App\\Models\\Film":{"id":1,"title":"ACADEMY DINOSAUR","description":"A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies","release_year":2006,"language_id":1,"original_language_id":null,"rental_duration":6,"rental_rate":"0.99","length":86,"replacement_cost":"20.99","rating":"PG","special_features":"Deleted Scenes,Behind the Scenes","created_at":"2006-02-15T05:03:42.000000Z","updated_at":"2006-02-15T05:03:42.000000Z",
         "actors":[
-            {"id":1,"first_name":"PENELOPE","last_name":"GUINESS","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":1}},
-            {"id":10,"first_name":"CHRISTIAN","last_name":"GABLE","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":10}},
-            {"id":20,"first_name":"LUCILLE","last_name":"TRACY","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":20}},
-            {"id":30,"first_name":"SANDRA","last_name":"PECK","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":30}}
-        ]}}]
+        {"id":1,"first_name":"PENELOPE","last_name":"GUINESS","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":1}},
+        {"id":10,"first_name":"CHRISTIAN","last_name":"GABLE","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":10}},
+        {"id":20,"first_name":"LUCILLE","last_name":"TRACY","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":20}},
+        {"id":30,"first_name":"SANDRA","last_name":"PECK","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":30}},
+        {"id":40,"first_name":"JOHNNY","last_name":"CAGE","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":40}},
+        {"id":53,"first_name":"MENA","last_name":"TEMPLE","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":53}},
+        {"id":108,"first_name":"WARREN","last_name":"NOLTE","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":108}},
+        {"id":162,"first_name":"OPRAH","last_name":"KILMER","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":162}},
+        {"id":188,"first_name":"ROCK","last_name":"DUKAKIS","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":188}},
+        {"id":198,"first_name":"MARY","last_name":"KEITEL","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z","pivot":{"film_id":1,"actor_id":198}}]}}]
         */
 
-        $this->assertSame(4, $academyDinosaur->actors->count());
+        $this->assertSame(10, $academyDinosaur->actors->count());
         $this->assertSame('PENELOPE', $academyDinosaur->actors->first()->first_name);
-        $this->assertSame('SANDRA', $academyDinosaur->actors->last()->first_name);
+        $this->assertSame('MARY', $academyDinosaur->actors->last()->first_name);
     }
 
     public function testAcademyDinosaursHasAnInventoryOfEight(): void
