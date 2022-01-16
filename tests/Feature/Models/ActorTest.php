@@ -87,5 +87,7 @@ class ActorTest extends TestCase
         $this->assertSame('ACADEMY DINOSAUR', $penelopeFilms->films->first()->title);
         $this->assertSame('KING EVOLUTION', $penelopeFilms->films->find(499)->title);
         $this->assertSame('WIZARD COLDBLOODED', $penelopeFilms->films->find(980)->title);
+
+        $this->assertSame(356.81, $penelopeFilms->films->sum->replacement_cost);
     }
 }
