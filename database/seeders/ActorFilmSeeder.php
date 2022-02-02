@@ -9,6 +9,8 @@ use JeroenZwart\CsvSeeder\CsvSeeder;
 
 class ActorFilmSeeder extends CsvSeeder
 {
+    public $truncate = false;
+
     public function __construct()
     {
         $this->file = '/database/seeders/actor_film.csv';

@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class StoreSeeder extends Seeder
 {
@@ -30,7 +31,10 @@ class StoreSeeder extends Seeder
                 'updated_at'       => '2006-02-15 04:57:12',
             ],
         ];
-
+        // staff haven't been seeded, yet!
+        // it's also not possible to seed staff without a store
+        Schema::disableForeignKeyConstraints();
         DB::table('stores')->insert($store);
+        Schema::enableForeignKeyConstraints();
     }
 }

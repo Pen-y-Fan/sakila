@@ -9,13 +9,15 @@ use JeroenZwart\CsvSeeder\CsvSeeder;
 
 class InventorySeeder extends CsvSeeder
 {
+    public $truncate = false;
+
     public function __construct()
     {
         $this->file = '/database/seeders/inventories.csv';
         $this->chunk = 500;
         $this->aliases = [
             'inventory_id' => 'id',
-            'last_update' => 'created_at'
+            'last_update'  => 'created_at',
         ];
         $this->timestamps = '2006-02-15 05:09:17';
     }

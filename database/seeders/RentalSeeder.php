@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use JeroenZwart\CsvSeeder\CsvSeeder;
 
 class RentalSeeder extends CsvSeeder
 {
+    public $truncate = false;
+
     public function __construct()
     {
         $this->file = '/database/seeders/rentals.csv';

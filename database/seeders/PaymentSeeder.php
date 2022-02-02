@@ -9,6 +9,8 @@ use JeroenZwart\CsvSeeder\CsvSeeder;
 
 class PaymentSeeder extends CsvSeeder
 {
+    public $truncate = false;
+
     public function __construct()
     {
         $this->file = '/database/seeders/payments.csv';
