@@ -6,7 +6,6 @@ namespace Tests\Feature\Models;
 
 use App\Models\Category;
 use App\Models\Film;
-use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class CategoryTest extends TestCase

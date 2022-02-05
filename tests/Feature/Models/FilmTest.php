@@ -111,4 +111,28 @@ class FilmTest extends TestCase
 
         $this->assertSame(8, $inventoryOfAcademyDinosaurs->inventories->count());
     }
+
+    public function testTheLongestFilmIs185minutes(): void
+    {
+        $longestFilm = Film::max('length');
+
+        $this->assertSame(185, $longestFilm);
+    }
+
+    public function testTheStores(): void
+    {
+        $stores = Film::first()->stores()->distinct()->get();
+
+        $this->assertSame(1, $stores->first()->id);
+        $this->assertSame(2, $stores->last()->id);
+    }
+
+    public function testBebeccaRentedAcademyDinosaursLast(): void
+    {
+        $rentalsForAcademyDinosaurs = Film::first()->rentals()->get();
+
+        $this->assertSame(23, $rentalsForAcademyDinosaurs->count());
+        $this->assertSame(12651, $rentalsForAcademyDinosaurs->last()->id);
+        $this->assertSame('REBECCA', $rentalsForAcademyDinosaurs->last()->customer->first_name);
+    }
 }

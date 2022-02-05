@@ -47,6 +47,10 @@ class Store extends Model
         return $this->hasMany(Customer::class);
     }
 
+    public function inventories(): HasMany
+    {
+        return $this->hasMany(Inventory::class);
+    }
     /**
      * Get the Store's customers payments.
      */
@@ -54,4 +58,14 @@ class Store extends Model
     {
         return $this->hasManyThrough(Payment::class, Customer::class);
     }
+
+    /**
+     * Get the Store's films.
+     */
+    public function films(): HasManyThrough
+    {
+        return $this->hasManyThrough(Film::class, Inventory::class, 'store_id', 'id', 'id', 'film_id');
+    }
+
+
 }

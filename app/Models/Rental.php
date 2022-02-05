@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Rental extends Model
 {
@@ -51,5 +52,21 @@ class Rental extends Model
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);
+    }
+
+    /**
+     * Get the Film associated with the Rental.
+     */
+    public function film(): HasOneThrough
+    {
+        return $this->hasOneThrough(Film::class, Inventory::class, 'id', 'id', 'inventory_id', 'film_id');
+    }
+
+    /**
+     * Get the Store associated with the Rental.
+     */
+    public function store(): HasOneThrough
+    {
+        return $this->hasOneThrough(Store::class, Inventory::class, 'id', 'id', 'inventory_id', 'store_id');
     }
 }

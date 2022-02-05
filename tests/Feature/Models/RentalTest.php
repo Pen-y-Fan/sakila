@@ -77,6 +77,22 @@ class RentalTest extends TestCase
         $this->assertSame('2.99', $rental->payments->first()->amount);
     }
 
+    public function testTheFirstRentalPaymentWasForFilmBlanketBeverly(): void
+    {
+        $rental = Rental::with('film')->first();
+
+        $this->assertSame(80, $rental->film->id);
+        $this->assertSame('BLANKET BEVERLY', $rental->film->title);
+    }
+
+    public function testTheFirstRentalPaymentWasFromStore1(): void
+    {
+        $rental = Rental::with('store')->first();
+
+        $this->assertSame(1, $rental->store->id);
+        $this->assertSame('Alberta', $rental->store->address->district);
+    }
+
     private function getRental($record): array
     {
         return [

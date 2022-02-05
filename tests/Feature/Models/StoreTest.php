@@ -457,15 +457,22 @@ class StoreTest extends TestCase
 
         // countBy returns an array
         // Inactive customers (active = 0)
-        $this->assertSame(8, $stores->find(1)->customers->countBy(fn ($customer) => $customer['active'])[0]);
+        $this->assertSame(8, $stores->find(1)->customers->countBy(fn($customer) => $customer['active'])[0]);
         // Active customers (active = 1)
-        $this->assertSame(318, $stores->find(1)->customers->countBy(fn ($customer) => $customer['active'])[1]);
+        $this->assertSame(318, $stores->find(1)->customers->countBy(fn($customer) => $customer['active'])[1]);
 
-        $this->assertSame(318, $stores->find(1)->customers->sum(fn ($customer) => $customer['active'] === true));
+        $this->assertSame(318, $stores->find(1)->customers->sum(fn($customer) => $customer['active'] === true));
 
         // Store 2, count, active and inactive
         $this->assertSame(273, $stores->find(2)->customers->count());
-        $this->assertSame(266, $stores->find(2)->customers->sum(fn ($customer) => $customer['active'] === true));
-        $this->assertSame(7, $stores->find(2)->customers->sum(fn ($customer) => $customer['active'] === false));
+        $this->assertSame(266, $stores->find(2)->customers->sum(fn($customer) => $customer['active'] === true));
+        $this->assertSame(7, $stores->find(2)->customers->sum(fn($customer) => $customer['active'] === false));
+    }
+
+    public function testStoreInventory(): void
+    {
+        $storeInventory = Store::withCount('inventories')->get();
+        $this->assertSame(2270, $storeInventory->first()->inventories_count);
+        $this->assertSame(2311, $storeInventory->find(2)->inventories_count);
     }
 }

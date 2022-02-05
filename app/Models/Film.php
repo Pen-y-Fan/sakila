@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Film extends Model
 {
@@ -22,6 +23,9 @@ class Film extends Model
         'id',
     ];
 
+    protected $casts = [
+        'release_year' => 'integer',
+    ];
     /**
      * Get the language associated with the Film.
      */
@@ -52,5 +56,21 @@ class Film extends Model
     public function inventories(): HasMany
     {
         return $this->hasMany(Inventory::class);
+    }
+
+    /**
+     * Get the Stores associated with the Film.
+     */
+    public function stores(): HasManyThrough
+    {
+        return $this->hasManyThrough(Store::class, Inventory::class, 'film_id', 'id', 'id', 'store_id');
+    }
+
+    /**
+     * Get the Rentals associated with the Film.
+     */
+    public function rentals(): HasManyThrough
+    {
+        return $this->hasManyThrough(Rental::class, Inventory::class, 'film_id', 'inventory_id', 'id', 'id');
     }
 }

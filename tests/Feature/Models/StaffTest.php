@@ -68,9 +68,21 @@ class StaffTest extends TestCase
 
     public function testMikeHillyerFirstPaymentTakenWas299(): void
     {
-        $jonStephens = Staff::with('payments')->first();
+        $mikeHillyer = Staff::with('payments')->first();
 
-        $this->assertSame(1, $jonStephens->payments->first()->id);
-        $this->assertSame('2.99', $jonStephens->payments->first()->amount);
+        $this->assertSame(1, $mikeHillyer->payments->first()->id);
+        $this->assertSame('2.99', $mikeHillyer->payments->first()->amount);
+    }
+
+    public function testMikeHillyerTakingsForJune2005(): void
+    {
+        $mikeHillyer = Staff::with('payments')
+            ->join('payments', 'staff.id', '=', 'payments.staff_id')
+            ->whereBetween('payments.payment_date', ['2005-06-01 00:00:00', '2005-06-30 23:59:59'])->get();
+
+        info('MikeHillyerFirstPaymentForJune2005', [$mikeHillyer]);
+
+        $this->assertEqualsWithDelta(9631.88, $mikeHillyer->sum->amount, 0.01);
+        $this->assertSame(2312, $mikeHillyer->count());
     }
 }
