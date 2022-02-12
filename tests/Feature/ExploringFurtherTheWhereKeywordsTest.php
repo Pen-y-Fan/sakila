@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use Illuminate\Support\Facades\DB;
+use App\Models\Country;
+use App\Models\Film;
 use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
@@ -17,40 +18,24 @@ class ExploringFurtherTheWhereKeywordsTest extends TestCase
 {
     public function testWhereInExample(): void
     {
-        /*
-            SELECT country_id, country FROM country
-            WHERE country IN ('Afghanistan', 'Bangladesh', 'China')
-            ORDER BY country_id DESC
-         */
-
         $selection = ['Afghanistan', 'Bangladesh', 'China'];
-        $countries = DB::table('country')
-            ->select(['country_id', 'country'])
-            ->whereIn('country', $selection)
-            ->orderBy('country_id', 'DESC')
+
+        $countries = Country::whereIn('country', $selection)
+            ->orderBy('id', 'DESC')
             ->get();
+
+        Log::info('Countries Where In Example', [$countries]);
 
         self::assertCount(3, $countries);
 
         foreach ($countries as $country) {
             self::assertContains($country->country, $selection);
         }
-
-        Log::info('Countries Where In Example', [$countries]);
-
-        /*
-                [2021-11-04 21:23:50] testing.INFO: Countries Where In Example
-                [{"Illuminate\\Database\\Query\\Builder":
-                [
-                {"country_id":23,"country":"China"},
-                {"country_id":12,"country":"Bangladesh"},
-                {"country_id":1,"country":"Afghanistan"}
-                ]}]
-        */
     }
 
     public function testTenFilmsWithReplacementCostBetween1999And2099(): void
     {
+
         /*
             SELECT film_id, title, special_features, replacement_cost
             FROM film
@@ -59,10 +44,8 @@ class ExploringFurtherTheWhereKeywordsTest extends TestCase
             LIMIT 10;
         */
 
-        $films = DB::table('film')
-            ->select('film_id', 'title', 'special_features', 'replacement_cost')
-            ->whereBetween('replacement_cost', [19.99, 20.99])
-            ->orderBy('film_id')
+        $films = Film::whereBetween('replacement_cost', [19.99, 20.99])
+            ->orderBy('id')
             ->limit(10)
             ->get();
 
@@ -91,11 +74,11 @@ class ExploringFurtherTheWhereKeywordsTest extends TestCase
         {"film_id":113,"title":"CALIFORNIA BIRDS","special_features":"Trailers,Commentaries,Deleted Scenes","replacement_cost":"19.99"}
         ]}]
         */
-
     }
 
     public function testTenFilmsWithReplacementCostNotBetween1899And2099(): void
     {
+
         /*
             SELECT film_id, title, special_features, replacement_cost
             FROM film
@@ -104,10 +87,8 @@ class ExploringFurtherTheWhereKeywordsTest extends TestCase
             LIMIT 10;
         */
 
-        $films = DB::table('film')
-            ->select('film_id', 'title', 'special_features', 'replacement_cost')
-            ->whereNotBetween('replacement_cost', [18.99, 20.99])
-            ->orderBy('film_id')
+        $films = Film::whereNotBetween('replacement_cost', [18.99, 20.99])
+            ->orderBy('id')
             ->limit(10)
             ->get();
 
@@ -139,19 +120,18 @@ class ExploringFurtherTheWhereKeywordsTest extends TestCase
         ]}]
 
         */
-
     }
+
     public function testAfricanEggOrAgentTruman(): void
     {
+
         /*
             SELECT film_id, title, special_features, replacement_cost
             FROM film
             WHERE (title = 'African Egg') OR (title = 'Agent Truman');
         */
 
-        $films = DB::table('film')
-            ->select('film_id', 'title', 'special_features', 'replacement_cost')
-            ->where('title', 'African Egg')
+        $films = Film::where('title', 'African Egg')
             ->orWhere('title', 'Agent Truman')
             ->get();
 

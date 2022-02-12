@@ -2,23 +2,27 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": ["sakila", "laravel", "mysql", "demo", "practise"],
     "license": "MIT",
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^8.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.65",
+        "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5"
     },
     "require-dev": {
-        "facade/ignition": "^2.5",
+        "barryvdh/laravel-ide-helper": "^2.10",
+        "spatie/laravel-ignition": "^1.0",
         "fakerphp/faker": "^1.9.1",
+        "jeroenzwart/laravel-csv-seeder": "^1.6",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^5.10",
-        "phpunit/phpunit": "^9.5.10"
+        "nunomaduro/collision": "^6.1",
+        "nunomaduro/larastan": "^1.0",
+        "phpunit/phpunit": "^9.5.10",
+        "symplify/easy-coding-standard": "^9.4"
     },
     "autoload": {
         "psr-4": {
@@ -38,7 +42,10 @@
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi",
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:meta"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
@@ -46,7 +53,10 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "tests": "phpunit --testdox"
+        "tests": "phpunit --testdox",
+        "check-cs": "ecs check --ansi",
+        "fix-cs": "ecs check --fix --ansi",
+        "phpstan": "phpstan analyse --ansi"
     },
     "extra": {
         "laravel": {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Models\Actor;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
@@ -23,8 +24,7 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
 
         // SELECT * FROM actor WHERE last_name = 'BERRY';
 
-        $actorsCalledBerry = DB::table('actor')
-            ->where('last_name', 'BERRY') // Note: no '=' operator
+        $actorsCalledBerry = Actor::where('last_name', 'BERRY') // Note: no '=' operator
             ->get();
 
         self::assertCount(3, $actorsCalledBerry);
@@ -35,14 +35,13 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
         Log::info('Actors called Berry', [$actorsCalledBerry]);
 
         /*
-        [2021-11-03 22:56:45] testing.INFO: Actors called Berry
-        [
-        {"Illuminate\\Support\\Collection":
-        [
-        {"actor_id":12,"first_name":"KARL","last_name":"BERRY","last_update":"2006-02-15 04:34:33"},
-        {"actor_id":60,"first_name":"HENRY","last_name":"BERRY","last_update":"2006-02-15 04:34:33"},
-        {"actor_id":91,"first_name":"CHRISTOPHER","last_name":"BERRY","last_update":"2006-02-15 04:34:33"}
-        ]}]
+
+            [2021-11-27 20:19:42] testing.INFO: Actors called Berry
+        [{"Illuminate\\Database\\Eloquent\\Collection":
+        [{"id":12,"first_name":"KARL","last_name":"BERRY","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z"},
+        {"id":60,"first_name":"HENRY","last_name":"BERRY","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z"},
+        {"id":91,"first_name":"CHRISTOPHER","last_name":"BERRY","created_at":"2006-02-15T04:34:33.000000Z","updated_at":"2006-02-15T04:34:33.000000Z"}]}]
+
         */
     }
 
@@ -51,7 +50,7 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
 
         // SELECT * FROM actor WHERE last_name = 'BERRY' AND first_name = 'KARL';
 
-        $actorsCalledKarlBerry = DB::table('actor')
+        $actorsCalledKarlBerry = Actor::select(['id', 'first_name', 'last_name'])
             ->where('last_name', 'BERRY')
             ->where('first_name', 'KARL')
             ->get();
@@ -65,25 +64,21 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
         Log::info('Actors called Karl Berry', [$actorsCalledKarlBerry]);
 
         /*
-        [2021-11-03 23:02:20] testing.INFO: Actors called Karl Berry
-        [
-        {"Illuminate\\Support\\Collection":
-        [
-        {"actor_id":12,"first_name":"KARL","last_name":"BERRY","last_update":"2006-02-15 04:34:33"}
-        ]}]
+            [2021-11-27 21:05:49] testing.INFO: Actors called Karl Berry
+        [{"Illuminate\\Database\\Eloquent\\Collection":[{"id":12,"first_name":"KARL","last_name":"BERRY"}]}]
+
         */
     }
 
     public function testWhereClauseCanBeAnArray(): void
     {
-
         // SELECT * FROM actor WHERE last_name = 'BERRY' AND first_name = 'KARL';
 
-        $actorsCalledKarlBerry = DB::table('actor')
+        $actorsCalledKarlBerry = Actor::select(['id', 'first_name', 'last_name'])
             ->where(
                 [
                     ['last_name', 'BERRY'],
-                    ['first_name', 'KARL']
+                    ['first_name', 'KARL'],
                 ]
             )
             ->get();
@@ -97,12 +92,11 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
         Log::info('Actors called Karl Berry', [$actorsCalledKarlBerry]);
 
         /*
-        [2021-11-03 23:07:01] testing.INFO: Actors called Karl Berry
-        [
-        {"Illuminate\\Support\\Collection":
-        [
-        {"actor_id":12,"first_name":"KARL","last_name":"BERRY","last_update":"2006-02-15 04:34:33"}
+
+        [2021-11-27 21:07:36] testing.INFO: Actors called Karl Berry
+        [{"Illuminate\\Database\\Eloquent\\Collection":[{"id":12,"first_name":"KARL","last_name":"BERRY"}
         ]}]
+
         */
     }
 
@@ -111,15 +105,14 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
      */
     public function testWhereClauseCanBeAClosure(): void
     {
-
         // SELECT * FROM actor WHERE last_name = 'BERRY' AND first_name = 'KARL';
 
-        $actorsCalledKarlBerry = DB::table('actor')
+        $actorsCalledKarlBerry = Actor::select(['id', 'first_name', 'last_name'])
             ->where(function ($query) {
                 $query->where(
                     [
                         ['first_name', 'KARL'],
-                        ['last_name', 'BERRY']
+                        ['last_name', 'BERRY'],
                     ]
                 );
             })
@@ -131,14 +124,12 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
             self::assertSame('BERRY', $actor->last_name);
             self::assertSame('KARL', $actor->first_name);
         }
-        Log::info('Actors called Karl Berry', [$actorsCalledKarlBerry]);
+        Log::info('Actors called Karl Berry closure', [$actorsCalledKarlBerry]);
 
         /*
-        [2021-11-03 23:07:01] testing.INFO: Actors called Karl Berry
-        [
-        {"Illuminate\\Support\\Collection":
-        [
-        {"actor_id":12,"first_name":"KARL","last_name":"BERRY","last_update":"2006-02-15 04:34:33"}
+            [2021-11-27 21:09:45] testing.INFO: Actors called Karl Berry closure
+        [{"Illuminate\\Database\\Eloquent\\Collection":
+        [{"id":12,"first_name":"KARL","last_name":"BERRY"}
         ]}]
         */
     }
@@ -158,13 +149,12 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
                 ORDER BY actor_count DESC
                 LIMIT 10;
         */
-        $TopTenListOfActorsLastNames = DB::table('actor')
-            ->select(
-                [
-                    'last_name',
-                    DB::raw('COUNT(*) AS actor_count')
-                ]
-            )
+        $TopTenListOfActorsLastNames = Actor::select(
+            [
+                'last_name',
+                DB::raw('COUNT(*) AS actor_count'),
+            ]
+        )
             ->groupBy('last_name')
             ->orderBy('actor_count', 'DESC')
             ->limit(10)
@@ -176,28 +166,25 @@ class UnderstandingTheUsageOfWhereKeywordTest extends TestCase
         self::assertSame('KILMER', $TopTenListOfActorsLastNames[0]->last_name);
         self::assertSame(5, $TopTenListOfActorsLastNames[0]->actor_count);
 
-
         Log::info(
             'Top 10 list of the most popular last names, with a count of how many actors have used it',
             [$TopTenListOfActorsLastNames]
         );
 
         /*
-        [2021-11-03 23:48:09] testing.INFO: Top 10 list of the most popular last names, with a count of how many actors have used it
-        [
-        {"Illuminate\\Support\\Collection":
-        [
+            [2021-11-27 21:11:55] testing.INFO: Top 10 list of the most popular last names, with a count of how many actors have used it
+        [{"Illuminate\\Database\\Eloquent\\Collection":[
         {"last_name":"KILMER","actor_count":5},
-        {"last_name":"NOLTE","actor_count":4},
         {"last_name":"TEMPLE","actor_count":4},
-        {"last_name":"ALLEN","actor_count":3},
-        {"last_name":"GUINESS","actor_count":3},
-        {"last_name":"KEITEL","actor_count":3},
-        {"last_name":"WILLIAMS","actor_count":3},
-        {"last_name":"AKROYD","actor_count":3},
-        {"last_name":"BERRY","actor_count":3},
-        {"last_name":"GARLAND","actor_count":3}
-        ]}]
+        {"last_name":"NOLTE","actor_count":4},
+        {"last_name":"PECK","actor_count":3},
+        {"last_name":"HOFFMAN","actor_count":3},
+        {"last_name":"HOPKINS","actor_count":3},
+        {"last_name":"ZELLWEGER","actor_count":3},
+        {"last_name":"JOHANSSON","actor_count":3},
+        {"last_name":"DAVIS","actor_count":3},
+        {"last_name":"AKROYD","actor_count":3}]}]
+
         */
     }
 }
