@@ -1,14 +1,19 @@
-# Sakila practice
+# Sakila (sakila-original branch)
 
 This project has been created to practice query builder using
 the [Sakila MySQL database](https://dev.mysql.com/doc/sakila/en/). It is based on the YouTube
 series [Laravel Query Builder by codemystif](https://www.youtube.com/watch?v=AGT8bCde8XU&list=PLkyrdyGDWthC-yd9n8R3CEauJC4sFl-kj)
 
+Note: The database used on this branch is **not** compatible with the database created on the main branch. This branch 
+is used for experiments with the original Sakila database, using query builder. The main branch uses eloquent models. 
+See below for more information on how to download the Sakila database from Oracle. This branch's database configured in 
+the **.env** should point to the original sakila database.
+
 ## Requirements
 
-This is a Laravel 8 project. The installation is similar to a new Laravel 8 project.
+This is a Laravel 9 project. The installation is similar to a new Laravel 9 project.
 
-- [PHP 7.4 or 8.0+](https://www.php.net/downloads.php)
+- [PHP 8.0+](https://www.php.net/downloads.php)
 - [Composer](https://getcomposer.org)
 
 Recommended:
@@ -58,8 +63,8 @@ instructions on how to download and install the Sakila database.
 
 ## Configure Laravel
 
-Once the Sakila database has been created on your MySQL server, configure the Laravel **.env** file with the database,
-updating username and password as per you local setup.
+Once the Sakila database has been created on your MySQL server (the Sakila database in **only** compatible with MySQL 
+servers), configure the Laravel **.env** file with the database name, updating username and password as per you set up.
 
 ```text
 DB_CONNECTION=mysql
