@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Models;
 
 use App\Models\Payment;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class PaymentTest extends TestCase
@@ -25,7 +26,7 @@ class PaymentTest extends TestCase
     public function testTheFirstPaymentIsMigrated(): void
     {
         $firstPayment = $this->getPayment(self::FIRST);
-        $payment      = Payment::first();
+        $payment = Payment::first();
 
         $this->assertSame($firstPayment['id'], $payment->id);
         $this->assertSame($firstPayment['payment_date'], $payment->payment_date);
@@ -35,7 +36,7 @@ class PaymentTest extends TestCase
     public function testTheLastPaymentIsMigrated(): void
     {
         $lastPayment = $this->getPayment(self::LAST);
-        $payment     = Payment::find($lastPayment['id']);
+        $payment = Payment::find($lastPayment['id']);
 
         $this->assertSame($lastPayment['id'], $payment->id);
         $this->assertSame($lastPayment['payment_date'], $payment->payment_date);
@@ -116,6 +117,57 @@ class PaymentTest extends TestCase
         );
         $this->assertSame($expectedTop['id'], $payments->first()->id);
         $this->assertCount(10, $expectedTop);
+    }
+
+    public function testPaymentsInJuly2005(): void
+    {
+        $sumPaymentsJune05 = Payment::query()
+            ->paymentAfter('2005-07-01')
+            ->paymentBefore('2005-07-31')
+            ->sum('amount');
+
+        $this->assertSame('28373.89', $sumPaymentsJune05);
+    }
+
+    /*
+     select year(payment_date),month(payment_date),sum(amount)
+     from payment
+     group by year(payment_date),month(payment_date)
+     order by year(payment_date),month(payment_date);
+     */
+
+    public function testPaymentsByYearAndMonth(): void
+    {
+        $summaryOfPaymentsByYearAndMonth = DB::table('payments')
+            ->select(
+                [
+                    DB::raw('year(payment_date) as year'),
+                    DB::raw('month(payment_date) as month'),
+                    DB::raw('sum(amount) as payments')
+                ]
+            )
+            ->groupByRaw('year,month')
+            ->orderByRaw('year,month')
+            ->get();
+
+        \Log::info('$summaryOfPaymentsByYearAndMonth', [$summaryOfPaymentsByYearAndMonth]);
+
+        /*
+         [{"Illuminate\\Support\\Collection":
+        [{"year":2005,"month":5,"payments":"4824.43"},
+        {"year":2005,"month":6,"payments":"9631.88"},
+        {"year":2005,"month":7,"payments":"28373.89"},
+        {"year":2005,"month":8,"payments":"24072.13"},
+        {"year":2006,"month":2,"payments":"514.18"}]}]
+         */
+        $this->assertSame(
+            "28373.89",
+            $summaryOfPaymentsByYearAndMonth
+                ->where('year', '=', '2005')
+                ->where('month', '=', '7')
+                ->first()
+                ->payments
+        );
     }
 
     private function getPayment($record): array
