@@ -88,6 +88,8 @@ class ActorTest extends TestCase
         $this->assertSame('KING EVOLUTION', $penelopeFilms->films->find(499)->title);
         $this->assertSame('WIZARD COLDBLOODED', $penelopeFilms->films->find(980)->title);
 
-        $this->assertSame(356.81, $penelopeFilms->films->sum->replacement_cost);
+	// For some reason, sum is returning this: 356.8100000000001, which causes the test to fail.
+	// I'm hoping this fixes that.  
+        $this->assertSame(356.81, round($penelopeFilms->films->sum->replacement_cost, 2));
     }
 }

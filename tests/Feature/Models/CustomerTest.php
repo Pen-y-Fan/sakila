@@ -131,7 +131,8 @@ class CustomerTest extends TestCase
             fn($customer) => $customer->payments->sum('amount')
         );
 
-        $this->assertSame(30414.99, $totalSpend);
+	// For some reason $titalSpend is 30414.990000000005. This kind of addrsses that.
+        $this->assertSame(30414.99, round($totalSpend, 2));
     }
 
     public function testTheLastPaymentOffEveryCustomer(): void
