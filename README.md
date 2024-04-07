@@ -15,23 +15,22 @@ downloaded and installed. The original database is not compatible with this Lara
 ## Notable changes
 
 Although the Laravel version is based on the original database, the structure and data is largely the same, these are
-differences. [Laravels Eloquent Model Conventions](https://laravel.com/docs/8.x/eloquent#eloquent-model-conventions)
+differences. [Laravels Eloquent Model Conventions](https://laravel.com/docs/10.x/eloquent#eloquent-model-conventions)
 have been followed to create the models and database tables. Notable changes:
 
-- The database tables have been renamed to **Eloquent Model Conventions** (e.g. table **store** is now **stores**, **
-  film** is now **
-  films**)
-- The table id was **<table_name>_id** is now **id**, e.g. `store`.`store_id` is now `store`.`id`
+- The database tables have been renamed to **Eloquent Model Conventions** (e.g. table **store** is 
+  now **stores**, **film** is now **films**)
+- The table id was **<table_name>_id** is now **id**, e.g. `store`.`store_id` is now `stores`.`id`
 - the **address.location** geometry data was not migrated. Although the **location** field does exist, it is a geometry
   field type, however it is empty.
 - all **ids** and **foreign ids** are now unsigned big integers **int(20)**.
 
 ## Requirements
 
-This is a Laravel 9 project. The requirements are the same as a
-new [Laravel 9 project](https://laravel.com/docs/8.x/installation).
+This is a Laravel 10 project. The requirements are the same as a
+new [Laravel 10 project](https://laravel.com/docs/10.x/installation).
 
-- [8.0+](https://www.php.net/downloads.php)
+- [8.2+](https://www.php.net/downloads.php)
 - [Composer](https://getcomposer.org)
 
 Recommended:
@@ -63,7 +62,7 @@ composer install
 Create an `.env` file from `.env.example`
 
 ```shell script
-composer post-root-package-install
+copy .\.env.example .\.env
 ```
 
 ## Generate APP_KEY
@@ -291,6 +290,14 @@ Writing AComplex Query Of Joining Results From Two Sub Queries (Tests\Feature\Wr
  ✔ Display each store id city country and sales
 ```
 
+Note: To keep tests simple and 
+quick [RefreshDatabase](https://laravel.com/docs/10.x/database-testing#resetting-the-database-after-each-test) has not 
+been used in this project, if the database is altered tests may fail, the database may be reset using:
+
+```shell
+php artisan migrate:fresh --seed
+```
+
 ## Log file
 
 A log of the results from many of the tests are output to storage > logs > **laravel.log**, this is useful to see the
@@ -310,7 +317,8 @@ welcome to fork or clone for your own use.
 
 ## Credits
 
-- [Michael Pritchard \(AKA Pen-y-Fan\)](https://github.com/pen-y-fan).
+- [Michael Pritchard \(AKA Pen-y-Fan\)](https://github.com/pen-y-fan) original project
+- [Greg \(AKA Ultrablue\)](https://github.com/ultrablue) upgrade to Laravel 10.
 
 ## License
 
