@@ -13,7 +13,7 @@ class FilmTest extends TestCase
     public function testTheFirstFilmIsAcademyDinosaur(): void
     {
         /*
-                id,title,description,release_year,language_id,original_language_id,rental_duration,rental_rate,length,replacement_cost,rating,special_features,created_at,updated_at
+        id,title,description,release_year,language_id,original_language_id,rental_duration,rental_rate,length,replacement_cost,rating,special_features,created_at,updated_at
         1,ACADEMY DINOSAUR,A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies,2006,1,,6,0.99,86,20.99,PG,"Deleted Scenes,Behind the Scenes",2006-02-15 05:03:42,2006-02-15 05:03:42
         */
 
@@ -127,12 +127,11 @@ class FilmTest extends TestCase
         $this->assertSame(2, $stores->last()->id);
     }
 
-    public function testBebeccaRentedAcademyDinosaursLast(): void
+    public function testWillieRentedAcademyDinosaursLast(): void
     {
-        $rentalsForAcademyDinosaurs = Film::first()->rentals()->get();
-
+        $rentalsForAcademyDinosaurs = Film::first()->rentals()->OrderBy('rental_date')->get();
         $this->assertSame(23, $rentalsForAcademyDinosaurs->count());
-        $this->assertSame(12651, $rentalsForAcademyDinosaurs->last()->id);
-        $this->assertSame('REBECCA', $rentalsForAcademyDinosaurs->last()->customer->first_name);
+        $this->assertSame(15453, $rentalsForAcademyDinosaurs->last()->id);
+        $this->assertSame('WILLIE', $rentalsForAcademyDinosaurs->last()->customer->first_name);
     }
 }
